@@ -32,8 +32,9 @@ on conflict (code) do nothing;
 update public.app_settings
 set club_name = 'Pinellas Run Club',
     club_tagline = 'Better ∞ Together',
-    support_email = coalesce(support_email, 'hello@pinellasrunclub.com'),
-    instagram_url = coalesce(instagram_url, 'https://instagram.com/pinellasrunclub'),
+    support_email = coalesce(support_email, 'pinellasrunclub@gmail.com'),
+    instagram_url = coalesce(instagram_url, 'https://www.instagram.com/pinellasrunclub/'),
+    website_url = coalesce(website_url, 'https://www.pinellasrunclub.com'),
     require_member_approval = false,
     default_checkin_radius_meters = 250
 where id = 1;

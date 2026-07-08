@@ -9,7 +9,7 @@ import { copy } from '@/lib/copy';
 import { colors, spacing } from '@/theme';
 
 // TODO: read from app_settings.support_email once a settings service exists.
-const SUPPORT_EMAIL = 'hello@pinellasrunclub.com';
+const SUPPORT_EMAIL = 'pinellasrunclub@gmail.com';
 
 export default function SuspendedScreen() {
   const { signOut } = useAuth();

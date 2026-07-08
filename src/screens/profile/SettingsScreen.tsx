@@ -12,7 +12,7 @@ import { hapticLight } from '@/lib/haptics';
 import { colors, radius, spacing } from '@/theme';
 import type { ProfileStackScreenProps } from '@/types/navigation';
 
-const SUPPORT_EMAIL = 'hello@pinellasrunclub.com';
+const SUPPORT_EMAIL = 'pinellasrunclub@gmail.com';
 
 const NOTIFICATION_PREFS = [
   { key: 'notification_events', label: 'Events & runs' },

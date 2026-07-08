@@ -8,6 +8,14 @@ export const copy = {
     tagline: 'Better ∞ Together',
     short: "More than a run. We're a community.",
     together: 'Together we run Pinellas.',
+    spaceForYourPace: 'The space for your pace',
+    hashtag: '#BETTERTOGETHER',
+  },
+  links: {
+    website: 'https://www.pinellasrunclub.com',
+    instagram: 'https://www.instagram.com/pinellasrunclub/',
+    facebook: 'https://www.facebook.com/groups/247627071115984',
+    supportEmail: 'pinellasrunclub@gmail.com',
   },
   auth: {
     welcomeTitle: 'Together we run Pinellas.',

@@ -7,9 +7,9 @@ import { hapticLight } from '@/lib/haptics';
 import { colors, radius, spacing } from '@/theme';
 import type { MoreStackScreenProps } from '@/types/navigation';
 
-const SUPPORT_EMAIL = 'hello@pinellasrunclub.com';
+const SUPPORT_EMAIL = 'pinellasrunclub@gmail.com';
 const INSTAGRAM_URL = 'https://instagram.com/pinellasrunclub';
-const WEBSITE_URL = 'https://pinellasrunclub.com';
+const WEBSITE_URL = 'https://www.pinellasrunclub.com';
 
 const FAQS = [
   {
