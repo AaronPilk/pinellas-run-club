@@ -8,18 +8,18 @@ const { withDangerousMod } = require('@expo/config-plugins');
 const fs = require('fs');
 const path = require('path');
 
-const PATCH_MARKER = 'FMT_CONSTEVAL=';
+const PATCH_MARKER = 'PRC patch: force consteval off';
 
 const PATCH = `
     # Fix fmt consteval build errors on newer Xcode/Clang (RN 0.76 ships fmt 9.x).
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        defs = Array(config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] || ['$(inherited)'])
-        defs << '$(inherited)' unless defs.include?('$(inherited)')
-        defs << 'FMT_CONSTEVAL=' unless defs.include?('FMT_CONSTEVAL=')
-        defs << 'FMT_USE_NONTYPE_TEMPLATE_ARGS=0' unless defs.include?('FMT_USE_NONTYPE_TEMPLATE_ARGS=0')
-        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = defs
-      end
+    fmt_base = File.join(installer.sandbox.root, 'fmt/include/fmt/base.h')
+    if File.exist?(fmt_base)
+      original = File.read(fmt_base)
+      patched = original.gsub(
+        '#if !defined(__cpp_lib_is_constant_evaluated)',
+        '#if 1 // PRC patch: force consteval off (new Xcode clang rejects fmt consteval)'
+      )
+      File.write(fmt_base, patched) if patched != original
     end
 `;
 
