@@ -1,0 +1,5 @@
+# Supabase local development config for Pinellas Run Club
+project_id = "pinellas-run-club"
+
+[functions.send-push]
+verify_jwt = true

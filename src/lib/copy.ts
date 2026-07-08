@@ -1,0 +1,87 @@
+/**
+ * App copywriting constants. Tone: short, confident, local, energetic.
+ * Not corporate. Not cheesy.
+ */
+export const copy = {
+  brand: {
+    name: 'Pinellas Run Club',
+    tagline: 'Better ∞ Together',
+    short: "More than a run. We're a community.",
+    together: 'Together we run Pinellas.',
+  },
+  auth: {
+    welcomeTitle: 'Together we run Pinellas.',
+    welcomeSubtitle: "More than a run. We're a community.",
+    signIn: 'Sign In',
+    signUp: 'Join the Club',
+    forgotPassword: 'Forgot password?',
+    pendingTitle: "You're almost in.",
+    pendingBody: "An organizer will approve your membership soon. We'll ping you when you're in.",
+    suspendedTitle: 'Account on hold',
+    suspendedBody: 'Your membership is currently suspended. Reach out if you think this is a mistake.',
+  },
+  events: {
+    tonight: 'Run Club Tonight!',
+    areYouComing: 'Are you coming?',
+    imIn: "I'm In",
+    maybe: 'Maybe',
+    cantMakeIt: "Can't Make It",
+    emptyUpcoming: 'No runs on the calendar yet. Check back soon.',
+    emptyPast: 'No past events yet.',
+  },
+  checkin: {
+    checkIn: 'Check In',
+    checkedIn: 'Checked In!',
+    thanks: 'Thanks for showing up.',
+    streak: 'Keep the streak alive.',
+    nothingNow: 'No check-in open right now.',
+    seeYouAtTheNext: 'See you at the next run.',
+  },
+  feed: {
+    emptyTitle: 'Nothing here yet.',
+    emptyBody: 'Be the first to post from a run.',
+    newPost: 'New Post',
+    share: 'Share',
+  },
+  courses: {
+    newPr: 'New PR',
+    viewHistory: 'View Course History',
+    logTime: 'Log a Time',
+    empty: 'No courses yet. Admins can add them from the dashboard.',
+  },
+  partners: {
+    showYourCard: 'Show your card. Save local.',
+    empty: 'Partner perks are coming soon.',
+  },
+  pass: {
+    title: 'Member Pass',
+    subtitle: 'Show your card. Save local.',
+  },
+  errors: {
+    generic: 'Something went wrong. Try again.',
+    network: "We couldn't load that. Pull to refresh.",
+    eventsLoad: "We couldn't load events. Pull to refresh.",
+    tooFar: 'You are too far away to check in.',
+    checkinNotOpen: 'Check-in has not opened yet.',
+    alreadyCheckedIn: 'You already checked in.',
+    uploadFailed: 'Upload failed. Try again with a smaller image.',
+    sessionExpired: 'You need to sign in again.',
+    locationDenied: 'Location permission is required to check in.',
+  },
+  actions: {
+    save: 'Save',
+    cancel: 'Cancel',
+    retry: 'Try Again',
+    delete: 'Delete',
+    confirm: 'Confirm',
+    signOut: 'Sign Out',
+  },
+  admin: {
+    pendingMembers: 'Pending Members',
+    approve: 'Approve',
+    reject: 'Reject',
+    suspend: 'Suspend',
+    verify: 'Verify',
+    sendAnnouncement: 'Send Announcement',
+  },
+} as const;
