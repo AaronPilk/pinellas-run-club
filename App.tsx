@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { AppProviders } from '@/app/providers';
-import { RootNavigator } from '@/app/navigation/RootNavigator';
+import { AppProviders } from '@/core/providers';
+import { RootNavigator } from '@/core/navigation/RootNavigator';
 
 export default function App() {
   return (

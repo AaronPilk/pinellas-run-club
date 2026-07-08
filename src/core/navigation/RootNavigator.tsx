@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 
-import { useAuth } from '@/app/providers/AuthProvider';
+import { useAuth } from '@/core/providers/AuthProvider';
 import { colors } from '@/theme';
 import type { RootStackParamList } from '@/types/navigation';
 
