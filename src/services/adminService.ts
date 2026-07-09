@@ -5,6 +5,7 @@ import type {
   AdminDashboardCounts,
   Course,
   Event,
+  LapsedMember,
   Partner,
   Profile,
   SponsorLead,
@@ -72,6 +73,16 @@ export async function setMemberRole(profileId: string, role: UserRole): Promise<
     p_role: role,
   });
   if (error) throw error;
+}
+
+/**
+ * Follow-up report: approved members ordered by how long it has been since
+ * their last check-in (never-checked-in members first). Admin-gated in the DB.
+ */
+export async function getLapsedMembers(): Promise<LapsedMember[]> {
+  const { data, error } = await supabase.rpc('admin_get_lapsed_members');
+  if (error) throw error;
+  return (data ?? []) as LapsedMember[];
 }
 
 /** Manually check a member in to an event (front-desk flow). */

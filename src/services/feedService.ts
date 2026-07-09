@@ -68,6 +68,25 @@ export async function listPosts(cursor?: string | null): Promise<FeedPage> {
   };
 }
 
+/** Pinned announcements shown above the feed (newest pin first, max 5). */
+export async function listPinnedPosts(): Promise<FeedPostWithAuthor[]> {
+  const myProfileId = await getCurrentProfileId();
+
+  const { data, error } = await supabase
+    .from('feed_posts')
+    .select(POST_SELECT)
+    .not('pinned_at', 'is', null)
+    .is('deleted_at', null)
+    .is('hidden_at', null)
+    .order('pinned_at', { ascending: false })
+    .limit(5);
+
+  if (error) throw error;
+
+  const rows = (data ?? []) as unknown as RawPostRow[];
+  return rows.map((row) => toPost(row, myProfileId));
+}
+
 export async function getPost(postId: string): Promise<FeedPostWithAuthor> {
   const myProfileId = await getCurrentProfileId();
 
@@ -183,6 +202,15 @@ export async function deleteOwnPost(postId: string): Promise<void> {
     .update({ deleted_at: new Date().toISOString() })
     .eq('id', postId);
 
+  if (error) throw error;
+}
+
+/** Admin: pin a post to the top of the feed (or unpin it). */
+export async function setPostPinned(postId: string, pinned: boolean): Promise<void> {
+  const { error } = await supabase.rpc('admin_set_post_pinned', {
+    p_post_id: postId,
+    p_pinned: pinned,
+  });
   if (error) throw error;
 }
 

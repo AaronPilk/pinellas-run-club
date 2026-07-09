@@ -14,7 +14,9 @@ import {
   deleteOwnPost,
   getPost,
   listComments,
+  listPinnedPosts,
   listPosts,
+  setPostPinned,
   toggleLike,
   type FeedPage,
 } from '@/services/feedService';
@@ -27,6 +29,14 @@ export function useFeed() {
     queryFn: ({ pageParam }) => listPosts(pageParam),
     initialPageParam: null as string | null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
+  });
+}
+
+/** Pinned announcements rendered above the feed list. */
+export function usePinnedPosts() {
+  return useQuery({
+    queryKey: queryKeys.feed.pinned(),
+    queryFn: listPinnedPosts,
   });
 }
 
@@ -132,6 +142,21 @@ export function useDeleteOwnPost() {
     mutationFn: (postId: string) => deleteOwnPost(postId),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: queryKeys.feed.all });
+    },
+  });
+}
+
+/** Admin: pin/unpin a post. Invalidates the feed list, pinned section, and post. */
+export function useSetPostPinned() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ postId, pinned }: { postId: string; pinned: boolean }) =>
+      setPostPinned(postId, pinned),
+    onSuccess: (_data, { postId }) => {
+      qc.invalidateQueries({ queryKey: queryKeys.feed.list() });
+      qc.invalidateQueries({ queryKey: queryKeys.feed.pinned() });
+      qc.invalidateQueries({ queryKey: queryKeys.feed.post(postId) });
     },
   });
 }

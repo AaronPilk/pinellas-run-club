@@ -17,6 +17,7 @@ import TimeEntryScreen from '@/screens/courses/TimeEntryScreen';
 import CourseHistoryScreen from '@/screens/courses/CourseHistoryScreen';
 import AdminDashboardScreen from '@/screens/admin/AdminDashboardScreen';
 import AdminMembersScreen from '@/screens/admin/AdminMembersScreen';
+import AdminLapsedMembersScreen from '@/screens/admin/AdminLapsedMembersScreen';
 import AdminEventsScreen from '@/screens/admin/AdminEventsScreen';
 import AdminPartnersScreen from '@/screens/admin/AdminPartnersScreen';
 import AdminCoursesScreen from '@/screens/admin/AdminCoursesScreen';
@@ -46,6 +47,7 @@ export function MoreStack() {
       <Stack.Screen name="CourseHistory" component={CourseHistoryScreen} />
       <Stack.Screen name="AdminDashboard" component={AdminDashboardScreen} />
       <Stack.Screen name="AdminMembers" component={AdminMembersScreen} />
+      <Stack.Screen name="AdminLapsedMembers" component={AdminLapsedMembersScreen} />
       <Stack.Screen name="AdminEvents" component={AdminEventsScreen} />
       <Stack.Screen name="AdminPartners" component={AdminPartnersScreen} />
       <Stack.Screen name="AdminCourses" component={AdminCoursesScreen} />

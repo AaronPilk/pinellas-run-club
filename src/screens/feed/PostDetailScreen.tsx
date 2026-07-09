@@ -21,6 +21,7 @@ import {
   useComments,
   useDeleteOwnPost,
   usePost,
+  useSetPostPinned,
   useToggleLike,
 } from '@/hooks/useFeed';
 import { getErrorMessage } from '@/lib/errors';
@@ -40,6 +41,7 @@ export default function PostDetailScreen({ navigation, route }: FeedStackScreenP
   const toggleLike = useToggleLike();
   const deletePost = useDeleteOwnPost();
   const hidePost = useAdminHidePost();
+  const setPinned = useSetPostPinned();
 
   const [commentText, setCommentText] = useState('');
   const [actionError, setActionError] = useState<string | null>(null);
@@ -88,6 +90,33 @@ export default function PostDetailScreen({ navigation, route }: FeedStackScreenP
         },
       },
     ]);
+  };
+
+  const handleTogglePin = (currentlyPinned: boolean) => {
+    Alert.alert(
+      currentlyPinned ? 'Unpin post?' : 'Pin post?',
+      currentlyPinned
+        ? 'It will no longer show in the pinned section at the top of the feed.'
+        : 'It will show in the pinned section at the top of the feed for everyone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: currentlyPinned ? 'Unpin' : 'Pin',
+          onPress: () => {
+            setPinned.mutate(
+              { postId, pinned: !currentlyPinned },
+              {
+                onSuccess: () => hapticSuccess(),
+                onError: (err) => {
+                  hapticError();
+                  setActionError(getErrorMessage(err));
+                },
+              }
+            );
+          },
+        },
+      ]
+    );
   };
 
   const handleAddComment = () => {
@@ -185,6 +214,24 @@ export default function PostDetailScreen({ navigation, route }: FeedStackScreenP
                     <Ionicons name="trash-outline" size={16} color={colors.danger} />
                     <Text style={{ color: colors.danger, fontWeight: '700', fontSize: 13 }}>
                       Delete post
+                    </Text>
+                  </Pressable>
+                ) : null}
+                {isAdmin ? (
+                  <Pressable
+                    onPress={() => handleTogglePin(Boolean(data.pinned_at))}
+                    hitSlop={8}
+                    accessibilityRole="button"
+                    accessibilityLabel={data.pinned_at ? 'Unpin post' : 'Pin post'}
+                    style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}
+                  >
+                    <Ionicons
+                      name={data.pinned_at ? 'pin' : 'pin-outline'}
+                      size={16}
+                      color={colors.lime}
+                    />
+                    <Text style={{ color: colors.lime, fontWeight: '700', fontSize: 13 }}>
+                      {data.pinned_at ? 'Unpin (admin)' : 'Pin post (admin)'}
                     </Text>
                   </Pressable>
                 ) : null}

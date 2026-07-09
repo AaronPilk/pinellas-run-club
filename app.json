@@ -73,7 +73,8 @@
           }
         }
       ],
-      "./plugins/withFmtXcodeFix.js"
+      "./plugins/withFmtXcodeFix.js",
+      "expo-font"
     ]
   }
 }

@@ -120,6 +120,7 @@ export type MoreStackParamList = {
   CourseHistory: { courseId?: string } | undefined;
   AdminDashboard: undefined;
   AdminMembers: undefined;
+  AdminLapsedMembers: undefined;
   AdminEvents: undefined;
   AdminPartners: undefined;
   AdminCourses: undefined;

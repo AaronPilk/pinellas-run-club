@@ -4,7 +4,7 @@ import { Pressable, Text, View } from 'react-native';
 
 import { ErrorState, LoadingState, Screen, StatCard } from '@/components/ui';
 import { useAuth } from '@/hooks/useAuth';
-import { useDashboardCounts } from '@/hooks/useAdmin';
+import { useDashboardCounts, useLapsedMembers } from '@/hooks/useAdmin';
 import { hapticLight } from '@/lib/haptics';
 import { colors, radius, spacing } from '@/theme';
 import type { MoreStackParamList, MoreStackScreenProps } from '@/types/navigation';
@@ -21,6 +21,7 @@ export default function AdminDashboardScreen({
 }: MoreStackScreenProps<'AdminDashboard'>) {
   const { isAdmin } = useAuth();
   const countsQuery = useDashboardCounts();
+  const lapsedQuery = useLapsedMembers();
 
   if (!isAdmin) {
     return (
@@ -32,12 +33,24 @@ export default function AdminDashboardScreen({
 
   const counts = countsQuery.data;
 
+  // Members lapsed 21+ days (never-checked-in members count as lapsed).
+  const lapsedCount = lapsedQuery.data?.filter((member) => {
+    if (!member.last_checkin_at) return true;
+    return Date.now() - new Date(member.last_checkin_at).getTime() >= 21 * 86_400_000;
+  }).length;
+
   const sections: SectionRow[] = [
     {
       icon: 'people-outline',
       label: 'Members',
       detail: counts ? `${counts.pending_members} pending approval` : undefined,
       screen: 'AdminMembers',
+    },
+    {
+      icon: 'flag-outline',
+      label: 'Needs Follow-Up',
+      detail: lapsedCount !== undefined ? `${lapsedCount} lapsed 21+ days` : undefined,
+      screen: 'AdminLapsedMembers',
     },
     {
       icon: 'calendar-outline',

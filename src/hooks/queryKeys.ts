@@ -24,6 +24,7 @@ export const queryKeys = {
   feed: {
     all: ['feed'] as const,
     list: () => [...queryKeys.feed.all, 'list'] as const,
+    pinned: () => [...queryKeys.feed.all, 'pinned'] as const,
     post: (postId: string) => [...queryKeys.feed.all, 'post', postId] as const,
     comments: (postId: string) => [...queryKeys.feed.all, 'comments', postId] as const,
   },
@@ -58,6 +59,7 @@ export const queryKeys = {
     pendingMembers: () => [...queryKeys.admin.all, 'pendingMembers'] as const,
     members: (search?: string, status?: string) =>
       [...queryKeys.admin.all, 'members', search ?? '', status ?? ''] as const,
+    lapsedMembers: () => [...queryKeys.admin.all, 'lapsedMembers'] as const,
     sponsorLeads: (status?: string) =>
       [...queryKeys.admin.all, 'sponsorLeads', status ?? 'all'] as const,
     partners: () => [...queryKeys.admin.all, 'partners'] as const,

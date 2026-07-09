@@ -167,6 +167,7 @@ export interface FeedPost {
   comment_count: number;
   hidden_at: string | null;
   hidden_by_profile_id: string | null;
+  pinned_at: string | null;
   deleted_at: string | null;
   created_at: string;
   updated_at: string;
@@ -419,6 +420,18 @@ export interface MemberProfile {
 export interface AdminCourseTimeEntry extends CourseTimeEntry {
   course: Pick<Course, 'id' | 'name' | 'distance_miles'>;
   profile: ProfileSummary;
+}
+
+/** Row returned by the admin_get_lapsed_members RPC. */
+export interface LapsedMember {
+  profile_id: string;
+  full_name: string;
+  email: string;
+  phone: string | null;
+  avatar_url: string | null;
+  last_checkin_at: string | null;
+  checkins_total: number;
+  member_since: string;
 }
 
 export interface AdminDashboardCounts {

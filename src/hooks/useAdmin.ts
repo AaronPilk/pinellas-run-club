@@ -22,6 +22,13 @@ export function useAllMembers(params?: { search?: string; status?: UserStatus })
   });
 }
 
+export function useLapsedMembers() {
+  return useQuery({
+    queryKey: queryKeys.admin.lapsedMembers(),
+    queryFn: adminService.getLapsedMembers,
+  });
+}
+
 function useMemberMutation(fn: (profileId: string) => Promise<void>) {
   const qc = useQueryClient();
   return useMutation({

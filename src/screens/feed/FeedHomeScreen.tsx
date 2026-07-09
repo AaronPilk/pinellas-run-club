@@ -3,8 +3,8 @@ import React, { useMemo, useState } from 'react';
 import { FlatList, Pressable, RefreshControl, Text, View } from 'react-native';
 
 import { PostCard } from '@/components/PostCard';
-import { EmptyState, ErrorState, LoadingState, Screen } from '@/components/ui';
-import { useFeed, useToggleLike } from '@/hooks/useFeed';
+import { EmptyState, ErrorState, LoadingState, Screen, SectionHeader } from '@/components/ui';
+import { useFeed, usePinnedPosts, useToggleLike } from '@/hooks/useFeed';
 import { copy } from '@/lib/copy';
 import { hapticLight } from '@/lib/haptics';
 import { colors, radius, spacing } from '@/theme';
@@ -16,6 +16,7 @@ type FeedTab = 'all' | 'following';
 export default function FeedHomeScreen({ navigation }: FeedStackScreenProps<'FeedHome'>) {
   const [tab, setTab] = useState<FeedTab>('all');
   const feed = useFeed();
+  const pinned = usePinnedPosts();
   const toggleLike = useToggleLike();
 
   const posts = useMemo(
@@ -35,6 +36,43 @@ export default function FeedHomeScreen({ navigation }: FeedStackScreenProps<'Fee
       }}
     />
   );
+
+  const pinnedPosts = pinned.data ?? [];
+
+  // Pinned announcements above the feed — inside ListHeaderComponent so the
+  // FlatList keeps virtualizing. Only rendered when something is pinned.
+  const pinnedSection =
+    pinnedPosts.length > 0 ? (
+      <View style={{ marginBottom: spacing.xs }}>
+        <SectionHeader title="Pinned" />
+        {pinnedPosts.map((item) => (
+          <View key={item.id}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 4,
+                marginBottom: 4,
+              }}
+            >
+              <Ionicons name="pin" size={12} color={colors.lime} />
+              <Text
+                style={{
+                  color: colors.lime,
+                  fontSize: 11,
+                  fontWeight: '800',
+                  textTransform: 'uppercase',
+                  letterSpacing: 0.6,
+                }}
+              >
+                Pinned
+              </Text>
+            </View>
+            {renderPost({ item })}
+          </View>
+        ))}
+      </View>
+    ) : null;
 
   const header = (
     <View>
@@ -148,6 +186,7 @@ export default function FeedHomeScreen({ navigation }: FeedStackScreenProps<'Fee
         data={posts}
         keyExtractor={(item) => item.id}
         renderItem={renderPost}
+        ListHeaderComponent={pinnedSection}
         contentContainerStyle={{ paddingHorizontal: spacing.md, paddingBottom: 120 }}
         showsVerticalScrollIndicator={false}
         onEndReachedThreshold={0.4}
@@ -157,7 +196,10 @@ export default function FeedHomeScreen({ navigation }: FeedStackScreenProps<'Fee
         refreshControl={
           <RefreshControl
             refreshing={feed.isRefetching && !feed.isFetchingNextPage}
-            onRefresh={() => void feed.refetch()}
+            onRefresh={() => {
+              void feed.refetch();
+              void pinned.refetch();
+            }}
             tintColor={colors.lime}
           />
         }
