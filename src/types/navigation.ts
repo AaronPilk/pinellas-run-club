@@ -99,6 +99,7 @@ export type ProfileStackParamList = {
   MyBadges: undefined;
   MemberPass: undefined;
   Settings: undefined;
+  Subscribe: undefined;
   Notifications: undefined;
   Messages: undefined;
   ChatThread: { conversationId: string; otherName?: string; otherProfileId?: string };

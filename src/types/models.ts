@@ -75,6 +75,11 @@ export interface Profile {
   last_active_at: string | null;
   approved_at: string | null;
   approved_by_profile_id: string | null;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
+  subscription_status: string | null;
+  subscription_current_period_end: string | null;
+  subscription_updated_at: string | null;
   created_at: string;
   updated_at: string;
   deleted_at: string | null;
@@ -98,6 +103,9 @@ export interface AppSettings {
   support_email: string | null;
   instagram_url: string | null;
   website_url: string | null;
+  stripe_checkout_url: string | null;
+  subscription_price_label: string | null;
+  paywall_enabled: boolean;
   created_at: string;
   updated_at: string;
 }

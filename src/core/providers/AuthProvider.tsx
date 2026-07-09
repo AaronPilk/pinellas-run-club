@@ -25,6 +25,10 @@ export type AuthContextValue = {
   isApproved: boolean;
   isPending: boolean;
   isSuspended: boolean;
+  /** True when the member has an active/trialing paid subscription. */
+  isSubscribed: boolean;
+  /** Full app access: an admin OR an active subscriber. */
+  hasFullAccess: boolean;
   refetchProfile: () => Promise<void>;
   signOut: () => Promise<void>;
 };
@@ -90,17 +94,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const value = useMemo<AuthContextValue>(() => {
     const role = profile?.role;
     const status = profile?.status;
+    const isAdmin = role === 'admin' || role === 'super_admin';
+    const subStatus = profile?.subscription_status;
+    const isSubscribed = subStatus === 'active' || subStatus === 'trialing';
 
     return {
       session,
       profile,
       loading,
       userId: session?.user?.id ?? null,
-      isAdmin: role === 'admin' || role === 'super_admin',
+      isAdmin,
       isSuperAdmin: role === 'super_admin',
       isApproved: status === 'approved',
       isPending: status === 'pending',
       isSuspended: status === 'suspended' || status === 'rejected',
+      isSubscribed,
+      hasFullAccess: isAdmin || isSubscribed,
       refetchProfile: loadProfile,
       signOut,
     };

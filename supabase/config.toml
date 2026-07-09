@@ -3,3 +3,7 @@ project_id = "pinellas-run-club"
 
 [functions.send-push]
 verify_jwt = true
+
+# Stripe calls this with a Stripe signature, not a Supabase JWT — must be public.
+[functions.stripe-webhook]
+verify_jwt = false

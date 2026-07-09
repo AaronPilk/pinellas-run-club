@@ -13,6 +13,7 @@ import {
   Screen,
   StatCard,
 } from '@/components/ui';
+import { useAppSettings } from '@/hooks/useAppSettings';
 import { useAuth } from '@/hooks/useAuth';
 import { useCheckinStats } from '@/hooks/useCheckIn';
 import { useMyProfile } from '@/hooks/useMyProfile';
@@ -27,6 +28,8 @@ type GridItem = {
   label: string;
   onPress: () => void;
   badgeCount?: number;
+  /** Requires an active membership; locks behind the paywall for non-members. */
+  paid?: boolean;
 };
 
 function ProfileFact({ icon, label, value }: { icon: keyof typeof Ionicons.glyphMap; label: string; value: string }) {
@@ -46,12 +49,14 @@ function ProfileFact({ icon, label, value }: { icon: keyof typeof Ionicons.glyph
 export default function MyProfileScreen({ navigation }: ProfileStackScreenProps<'MyProfile'>) {
   const { colors } = useTheme();
 
-  const { signOut } = useAuth();
+  const { signOut, hasFullAccess } = useAuth();
   const profileQuery = useMyProfile();
   const statsQuery = useCheckinStats();
   const unreadQuery = useUnreadCount();
+  const settingsQuery = useAppSettings();
 
   const unread = unreadQuery.data ?? 0;
+  const locked = (settingsQuery.data?.paywall_enabled ?? false) && !hasFullAccess;
 
   const profile = profileQuery.data;
   const stats = statsQuery.data;
@@ -88,12 +93,13 @@ export default function MyProfileScreen({ navigation }: ProfileStackScreenProps<
 
   const gridItems: GridItem[] = [
     { icon: 'create-outline', label: 'Edit Profile', onPress: () => navigation.navigate('EditProfile') },
-    { icon: 'card-outline', label: 'Member Pass', onPress: () => navigation.navigate('MemberPass') },
-    { icon: 'ribbon-outline', label: 'My Badges', onPress: () => navigation.navigate('MyBadges') },
+    { icon: 'card-outline', label: 'Member Pass', onPress: () => navigation.navigate('MemberPass'), paid: true },
+    { icon: 'ribbon-outline', label: 'My Badges', onPress: () => navigation.navigate('MyBadges'), paid: true },
     {
       icon: 'footsteps-outline',
       label: 'Check-In History',
       onPress: () => tabNav?.navigate('CheckInTab', { screen: 'CheckInHistory' }),
+      paid: true,
     },
     {
       icon: 'notifications-outline',
@@ -101,8 +107,8 @@ export default function MyProfileScreen({ navigation }: ProfileStackScreenProps<
       onPress: () => navigation.navigate('Notifications'),
       badgeCount: unread,
     },
-    { icon: 'pricetags-outline', label: 'Partner Perks', onPress: () => navigation.navigate('PartnerPerks') },
-    { icon: 'stopwatch-outline', label: 'Courses', onPress: () => navigation.navigate('Courses') },
+    { icon: 'pricetags-outline', label: 'Partner Perks', onPress: () => navigation.navigate('PartnerPerks'), paid: true },
+    { icon: 'stopwatch-outline', label: 'Courses', onPress: () => navigation.navigate('Courses'), paid: true },
     { icon: 'person-add-outline', label: 'Invite a Friend', onPress: () => navigation.navigate('InviteFriend') },
     { icon: 'megaphone-outline', label: 'Sponsorships', onPress: () => navigation.navigate('Sponsorship') },
     { icon: 'help-circle-outline', label: 'Help & Support', onPress: () => navigation.navigate('HelpSupport') },
@@ -187,6 +193,41 @@ export default function MyProfileScreen({ navigation }: ProfileStackScreenProps<
         ) : null}
       </Card>
 
+      {locked ? (
+        <Pressable
+          onPress={() => {
+            hapticLight();
+            navigation.navigate('Subscribe');
+          }}
+          accessibilityRole="button"
+          accessibilityLabel="Become a member"
+          style={({ pressed }) => ({
+            marginTop: spacing.lg,
+            borderRadius: radius.lg,
+            borderWidth: 1,
+            borderColor: colors.lime,
+            backgroundColor: colors.darkCard,
+            padding: spacing.md,
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: spacing.sm,
+            opacity: pressed ? 0.9 : 1,
+            ...shadows.card,
+          })}
+        >
+          <Ionicons name="lock-open-outline" size={24} color={colors.lime} />
+          <View style={{ flex: 1 }}>
+            <Text style={{ color: colors.textPrimary, fontSize: 15, fontWeight: '900' }}>
+              Unlock the full club
+            </Text>
+            <Text style={{ color: colors.gray300, fontSize: 13, marginTop: 2 }}>
+              Events, check-ins, perks, courses & more.
+            </Text>
+          </View>
+          <Ionicons name="chevron-forward" size={18} color={colors.lime} />
+        </Pressable>
+      ) : null}
+
       <View
         style={{
           flexDirection: 'row',
@@ -200,11 +241,16 @@ export default function MyProfileScreen({ navigation }: ProfileStackScreenProps<
             key={item.label}
             onPress={() => {
               hapticLight();
-              item.onPress();
+              if (item.paid && locked) navigation.navigate('Subscribe');
+              else item.onPress();
             }}
             accessibilityRole="button"
             accessibilityLabel={
-              item.badgeCount ? `${item.label}, ${item.badgeCount} unread` : item.label
+              item.paid && locked
+                ? `${item.label}, members only`
+                : item.badgeCount
+                  ? `${item.label}, ${item.badgeCount} unread`
+                  : item.label
             }
             style={({ pressed }) => ({
               width: tileWidth,
@@ -239,11 +285,26 @@ export default function MyProfileScreen({ navigation }: ProfileStackScreenProps<
                 </Text>
               </View>
             ) : null}
-            <Ionicons name={item.icon} size={28} color={colors.lime} />
+            {item.paid && locked ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 10,
+                  right: 10,
+                }}
+              >
+                <Ionicons name="lock-closed" size={14} color={colors.gray500} />
+              </View>
+            ) : null}
+            <Ionicons
+              name={item.icon}
+              size={28}
+              color={item.paid && locked ? colors.gray500 : colors.lime}
+            />
             <Text
               numberOfLines={2}
               style={{
-                color: colors.textPrimary,
+                color: item.paid && locked ? colors.gray500 : colors.textPrimary,
                 fontSize: 12.5,
                 fontWeight: '700',
                 textAlign: 'center',

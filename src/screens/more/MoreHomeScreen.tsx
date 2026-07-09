@@ -3,7 +3,7 @@ import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { Alert, Pressable, Text, View } from 'react-native';
 
-import { Button, Card, Screen } from '@/components/ui';
+import { Screen } from '@/components/ui';
 import { useAuth } from '@/hooks/useAuth';
 import { useUnreadCount } from '@/hooks/useNotifications';
 import { copy } from '@/lib/copy';
@@ -126,20 +126,6 @@ export default function MoreHomeScreen({ navigation }: MoreStackScreenProps<'Mor
           <Ionicons name="chevron-forward" size={18} color={colors.gray500} />
         </Pressable>
       ))}
-
-      <Card style={{ marginTop: spacing.md, borderWidth: 1, borderColor: colors.lime }}>
-        <Text style={{ color: colors.textPrimary, fontSize: 18, fontWeight: '900' }}>
-          Want to partner with PRC?
-        </Text>
-        <Text style={{ color: colors.gray300, fontSize: 14, lineHeight: 20, marginTop: spacing.xs }}>
-          Learn about sponsorship opportunities and exclusive member perks.
-        </Text>
-        <Button
-          title="Become a Sponsor"
-          onPress={() => navigation.navigate('Sponsorship')}
-          style={{ marginTop: spacing.md }}
-        />
-      </Card>
 
       <Pressable
         onPress={handleSignOut}

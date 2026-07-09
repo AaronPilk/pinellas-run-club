@@ -7,6 +7,10 @@ export const queryKeys = {
     me: () => [...queryKeys.profile.all, 'me'] as const,
     member: (profileId: string) => [...queryKeys.profile.all, 'member', profileId] as const,
   },
+  settings: {
+    all: ['settings'] as const,
+    app: () => [...queryKeys.settings.all, 'app'] as const,
+  },
   events: {
     all: ['events'] as const,
     upcoming: () => [...queryKeys.events.all, 'upcoming'] as const,
