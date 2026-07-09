@@ -6,7 +6,7 @@ import { EmptyState, ErrorState, LoadingState, Screen } from '@/components/ui';
 import { useMarkNotificationRead, useNotifications } from '@/hooks/useNotifications';
 import { hapticLight } from '@/lib/haptics';
 import { formatRelativeTime } from '@/lib/timeUtils';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { Notification, NotificationType } from '@/types/models';
 import type { MoreStackScreenProps } from '@/types/navigation';
 
@@ -21,6 +21,8 @@ const TYPE_ICONS: Record<NotificationType, keyof typeof Ionicons.glyphMap> = {
 };
 
 export default function NotificationsScreen({ navigation }: MoreStackScreenProps<'Notifications'>) {
+  const { colors } = useTheme();
+
   const notificationsQuery = useNotifications();
   const markRead = useMarkNotificationRead();
 
@@ -48,11 +50,11 @@ export default function NotificationsScreen({ navigation }: MoreStackScreenProps
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontSize: 20,
             fontWeight: '900',
             textTransform: 'uppercase',
@@ -112,7 +114,7 @@ export default function NotificationsScreen({ navigation }: MoreStackScreenProps
               <View style={{ flex: 1 }}>
                 <Text
                   style={{
-                    color: colors.white,
+                    color: colors.textPrimary,
                     fontWeight: item.read ? '600' : '800',
                     fontSize: 14,
                   }}

@@ -6,12 +6,14 @@ import { Pressable, Text, View } from 'react-native';
 import { useAuth } from '@/hooks/useAuth';
 import { Button, Card, Screen } from '@/components/ui';
 import { copy } from '@/lib/copy';
-import { colors, spacing } from '@/theme';
+import { spacing, useTheme } from '@/theme';
 
 // TODO: read from app_settings.support_email once a settings service exists.
 const SUPPORT_EMAIL = 'pinellasrunclub@gmail.com';
 
 export default function SuspendedScreen() {
+  const { colors } = useTheme();
+
   const { signOut } = useAuth();
 
   return (
@@ -34,7 +36,7 @@ export default function SuspendedScreen() {
 
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontWeight: '900',
               fontSize: 24,
               textTransform: 'uppercase',

@@ -6,7 +6,7 @@ import { Alert, Image, Linking, Pressable, Text, View } from 'react-native';
 import { Badge, Button, Card, ErrorState, LoadingState, Screen } from '@/components/ui';
 import { usePartner } from '@/hooks/usePartners';
 import { hapticLight } from '@/lib/haptics';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { SponsorLevel } from '@/types/models';
 import type { AppTabsParamList, MoreStackScreenProps } from '@/types/navigation';
 
@@ -19,6 +19,8 @@ const SPONSOR_LABELS: Record<SponsorLevel, string> = {
 };
 
 function DetailSection({ label, children }: { label: string; children: React.ReactNode }) {
+  const { colors } = useTheme();
+
   return (
     <Card style={{ marginTop: spacing.sm }}>
       <Text
@@ -42,6 +44,8 @@ export default function PartnerDetailScreen({
   navigation,
   route,
 }: MoreStackScreenProps<'PartnerDetail'>) {
+  const { colors } = useTheme();
+
   const partnerQuery = usePartner(route.params.partnerId);
   const partner = partnerQuery.data;
 
@@ -115,7 +119,7 @@ export default function PartnerDetailScreen({
             justifyContent: 'center',
           }}
         >
-          <Ionicons name="chevron-back" size={22} color={colors.white} />
+          <Ionicons name="chevron-back" size={22} color={colors.textPrimary} />
         </Pressable>
       </View>
 
@@ -134,7 +138,7 @@ export default function PartnerDetailScreen({
             />
           ) : null}
           <View style={{ flex: 1 }}>
-            <Text style={{ color: colors.white, fontSize: 24, fontWeight: '900' }}>{partner.name}</Text>
+            <Text style={{ color: colors.textPrimary, fontSize: 24, fontWeight: '900' }}>{partner.name}</Text>
             <View style={{ flexDirection: 'row', gap: spacing.xs, marginTop: spacing.xxs }}>
               <Badge label={SPONSOR_LABELS[partner.sponsor_level] ?? partner.sponsor_level} tone="lime" />
               {partner.featured ? <Badge label="Featured" tone="neutral" /> : null}
@@ -155,7 +159,7 @@ export default function PartnerDetailScreen({
           >
             Member Offer
           </Text>
-          <Text style={{ color: colors.white, fontSize: 18, fontWeight: '800' }}>
+          <Text style={{ color: colors.textPrimary, fontSize: 18, fontWeight: '800' }}>
             {partner.short_offer}
           </Text>
           {partner.offer_details ? (

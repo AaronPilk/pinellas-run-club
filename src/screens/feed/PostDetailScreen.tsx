@@ -27,11 +27,13 @@ import {
 import { getErrorMessage } from '@/lib/errors';
 import { hapticError, hapticLight, hapticSuccess } from '@/lib/haptics';
 import { formatRelativeTime } from '@/lib/timeUtils';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { FeedCommentWithAuthor } from '@/types/models';
 import type { FeedStackScreenProps } from '@/types/navigation';
 
 export default function PostDetailScreen({ navigation, route }: FeedStackScreenProps<'PostDetail'>) {
+  const { colors } = useTheme();
+
   const { postId } = route.params;
   const { profile, isAdmin } = useAuth();
 
@@ -152,7 +154,7 @@ export default function PostDetailScreen({ navigation, route }: FeedStackScreenP
       </Pressable>
       <View style={{ flex: 1 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.xs }}>
-          <Text style={{ color: colors.white, fontWeight: '800', fontSize: 13 }}>
+          <Text style={{ color: colors.textPrimary, fontWeight: '800', fontSize: 13 }}>
             {item.author?.full_name ?? 'Member'}
           </Text>
           <Text style={{ color: colors.gray500, fontSize: 12 }}>
@@ -306,7 +308,7 @@ export default function PostDetailScreen({ navigation, route }: FeedStackScreenP
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.black }} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['top', 'left', 'right']}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -323,11 +325,11 @@ export default function PostDetailScreen({ navigation, route }: FeedStackScreenP
           }}
         >
           <Pressable onPress={() => navigation.goBack()} hitSlop={12} accessibilityLabel="Back">
-            <Ionicons name="chevron-back" size={26} color={colors.white} />
+            <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
           </Pressable>
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontWeight: '900',
               fontSize: 17,
               textTransform: 'uppercase',
@@ -350,7 +352,7 @@ export default function PostDetailScreen({ navigation, route }: FeedStackScreenP
               paddingVertical: spacing.sm,
               borderTopWidth: 1,
               borderTopColor: colors.charcoal,
-              backgroundColor: colors.black,
+              backgroundColor: colors.background,
             }}
           >
             <TextInput
@@ -364,7 +366,7 @@ export default function PostDetailScreen({ navigation, route }: FeedStackScreenP
                 borderRadius: radius.pill,
                 paddingHorizontal: spacing.md,
                 paddingVertical: 10,
-                color: colors.white,
+                color: colors.textPrimary,
                 fontSize: 14,
               }}
               maxLength={1000}

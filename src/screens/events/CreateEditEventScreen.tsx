@@ -21,7 +21,7 @@ import { getErrorMessage } from '@/lib/errors';
 import { hapticError, hapticSuccess } from '@/lib/haptics';
 import { uploadEventImage, type AdminEventInput } from '@/services/adminService';
 import { pickImage } from '@/services/mediaService';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { CheckinMethod, EventType } from '@/types/models';
 import type { EventsStackScreenProps } from '@/types/navigation';
 
@@ -62,6 +62,8 @@ function ChipRow<T extends string>({
   onChange: (next: T) => void;
   labelOf?: (option: T) => string;
 }) {
+  const { colors } = useTheme();
+
   return (
     <View
       style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs, marginBottom: spacing.md }}
@@ -100,6 +102,8 @@ function ChipRow<T extends string>({
 }
 
 function FieldLabel({ children }: { children: string }) {
+  const { colors } = useTheme();
+
   return (
     <Text
       style={{
@@ -120,6 +124,8 @@ export default function CreateEditEventScreen({
   navigation,
   route,
 }: EventsStackScreenProps<'CreateEditEvent'>) {
+  const { colors } = useTheme();
+
   const eventId = route.params?.eventId;
   const isEdit = Boolean(eventId);
   const { isAdmin, profile } = useAuth();
@@ -178,7 +184,7 @@ export default function CreateEditEventScreen({
 
   if (!isAdmin) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: colors.black }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
         <EmptyState
           icon="lock-closed-outline"
           title="Admins only"
@@ -192,7 +198,7 @@ export default function CreateEditEventScreen({
 
   if (isEdit && (existing.isPending || !prefilled) && !existing.isError) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: colors.black }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
         <LoadingState />
       </SafeAreaView>
     );
@@ -200,7 +206,7 @@ export default function CreateEditEventScreen({
 
   if (isEdit && existing.isError) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: colors.black }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
         <EmptyState
           icon="alert-circle-outline"
           title="Couldn't load event"
@@ -298,7 +304,7 @@ export default function CreateEditEventScreen({
   const previewUri = localImageUri ?? imageUrl;
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.black }} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['top', 'left', 'right']}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -314,11 +320,11 @@ export default function CreateEditEventScreen({
           }}
         >
           <Pressable onPress={() => navigation.goBack()} hitSlop={12} accessibilityLabel="Close">
-            <Ionicons name="close" size={26} color={colors.white} />
+            <Ionicons name="close" size={26} color={colors.textPrimary} />
           </Pressable>
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontWeight: '900',
               fontSize: 17,
               textTransform: 'uppercase',
@@ -498,7 +504,7 @@ export default function CreateEditEventScreen({
                 paddingVertical: spacing.sm,
               }}
             >
-              <Text style={{ color: colors.white, fontWeight: '600', fontSize: 15 }}>Featured</Text>
+              <Text style={{ color: colors.textPrimary, fontWeight: '600', fontSize: 15 }}>Featured</Text>
               <Switch
                 value={featured}
                 onValueChange={setFeatured}
@@ -519,7 +525,7 @@ export default function CreateEditEventScreen({
               }}
             >
               <View>
-                <Text style={{ color: colors.white, fontWeight: '600', fontSize: 15 }}>
+                <Text style={{ color: colors.textPrimary, fontWeight: '600', fontSize: 15 }}>
                   {publish ? 'Published' : 'Draft'}
                 </Text>
                 <Text style={{ color: colors.gray500, fontSize: 12 }}>

@@ -7,13 +7,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, Badge, Card, ErrorState, LoadingState, StatCard } from '@/components/ui';
 import { useMemberProfile } from '@/hooks/useMyProfile';
 import { formatFullDate } from '@/lib/timeUtils';
-import { colors, spacing } from '@/theme';
+import { spacing, useTheme } from '@/theme';
 import type { FeedStackScreenProps } from '@/types/navigation';
 
 export default function MemberProfileScreen({
   navigation,
   route,
 }: FeedStackScreenProps<'MemberProfile'>) {
+  const { colors } = useTheme();
+
   const { profileId } = route.params;
   const member = useMemberProfile(profileId);
 
@@ -37,7 +39,7 @@ export default function MemberProfileScreen({
           <Avatar uri={profile.avatar_url} name={profile.full_name} size={96} />
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontWeight: '900',
               fontSize: 24,
               marginTop: spacing.sm,
@@ -174,7 +176,7 @@ export default function MemberProfileScreen({
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.black }} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['top', 'left', 'right']}>
       {/* Header */}
       <View
         style={{
@@ -186,11 +188,11 @@ export default function MemberProfileScreen({
         }}
       >
         <Pressable onPress={() => navigation.goBack()} hitSlop={12} accessibilityLabel="Back">
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontWeight: '900',
             fontSize: 17,
             textTransform: 'uppercase',

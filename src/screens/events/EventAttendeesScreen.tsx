@@ -5,11 +5,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Avatar, Badge, EmptyState, ErrorState, LoadingState } from '@/components/ui';
 import { useEventAttendees } from '@/hooks/useEvents';
-import { colors, spacing } from '@/theme';
+import { spacing, useTheme } from '@/theme';
 import type { EventAttendee } from '@/types/models';
 import type { EventsStackScreenProps } from '@/types/navigation';
 
 function AttendeeRow({ attendee }: { attendee: EventAttendee }) {
+  const { colors } = useTheme();
+
   return (
     <View
       style={{
@@ -22,7 +24,7 @@ function AttendeeRow({ attendee }: { attendee: EventAttendee }) {
     >
       <Avatar uri={attendee.profile.avatar_url} name={attendee.profile.full_name} size={44} />
       <View style={{ flex: 1 }}>
-        <Text style={{ color: colors.white, fontWeight: '800', fontSize: 15 }} numberOfLines={1}>
+        <Text style={{ color: colors.textPrimary, fontWeight: '800', fontSize: 15 }} numberOfLines={1}>
           {attendee.profile.full_name}
         </Text>
         {attendee.profile.username ? (
@@ -45,6 +47,8 @@ export default function EventAttendeesScreen({
   navigation,
   route,
 }: EventsStackScreenProps<'EventAttendees'>) {
+  const { colors } = useTheme();
+
   const { eventId } = route.params;
   const attendees = useEventAttendees(eventId);
 
@@ -105,7 +109,7 @@ export default function EventAttendeesScreen({
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.black }} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['top', 'left', 'right']}>
       {/* Header */}
       <View
         style={{
@@ -117,11 +121,11 @@ export default function EventAttendeesScreen({
         }}
       >
         <Pressable onPress={() => navigation.goBack()} hitSlop={12} accessibilityLabel="Back">
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontWeight: '900',
             fontSize: 17,
             textTransform: 'uppercase',

@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 
 import { copy } from '@/lib/copy';
 import { getErrorMessage } from '@/lib/errors';
-import { colors, spacing } from '@/theme';
+import { spacing, useTheme } from '@/theme';
 
 import { Button } from './Button';
 
@@ -16,6 +16,8 @@ type Props = {
 };
 
 export function ErrorState({ error, message, onRetry }: Props) {
+  const { colors } = useTheme();
+
   const text = message ?? (error !== undefined ? getErrorMessage(error) : copy.errors.generic);
 
   return (
@@ -28,7 +30,7 @@ export function ErrorState({ error, message, onRetry }: Props) {
       />
       <Text
         style={{
-          color: colors.white,
+          color: colors.textPrimary,
           fontWeight: '700',
           fontSize: 16,
           textAlign: 'center',

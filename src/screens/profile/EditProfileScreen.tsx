@@ -10,7 +10,7 @@ import { getErrorMessage } from '@/lib/errors';
 import { hapticLight, hapticSuccess } from '@/lib/haptics';
 import { profileEditSchema } from '@/lib/validation';
 import { pickImage } from '@/services/mediaService';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { ProfileStackScreenProps } from '@/types/navigation';
 
 const INTEREST_OPTIONS = [
@@ -34,6 +34,8 @@ const NOTIFICATION_PREFS = [
 ] as const;
 
 export default function EditProfileScreen({ navigation }: ProfileStackScreenProps<'EditProfile'>) {
+  const { colors } = useTheme();
+
   const { refetchProfile } = useAuth();
   const profileQuery = useMyProfile();
   const updateProfile = useUpdateMyProfile();
@@ -167,11 +169,11 @@ export default function EditProfileScreen({ navigation }: ProfileStackScreenProp
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontSize: 20,
             fontWeight: '900',
             textTransform: 'uppercase',
@@ -338,7 +340,7 @@ export default function EditProfileScreen({ navigation }: ProfileStackScreenProp
               borderTopColor: colors.charcoal,
             }}
           >
-            <Text style={{ color: colors.white, fontSize: 15, fontWeight: '600' }}>{pref.label}</Text>
+            <Text style={{ color: colors.textPrimary, fontSize: 15, fontWeight: '600' }}>{pref.label}</Text>
             <Switch
               value={notifications[pref.key]}
               onValueChange={(value) =>

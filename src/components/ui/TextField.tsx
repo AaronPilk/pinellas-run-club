@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, TextInput, View, type TextInputProps, type ViewStyle } from 'react-native';
 
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 
 type Props = TextInputProps & {
   label?: string;
@@ -10,6 +10,8 @@ type Props = TextInputProps & {
 };
 
 export function TextField({ label, error, containerStyle, style, ...inputProps }: Props) {
+  const { colors } = useTheme();
+
   return (
     <View style={[{ marginBottom: spacing.md }, containerStyle]}>
       {label ? (
@@ -30,11 +32,11 @@ export function TextField({ label, error, containerStyle, style, ...inputProps }
         placeholderTextColor={colors.gray500}
         style={[
           {
-            backgroundColor: colors.charcoal,
+            backgroundColor: colors.inputBg,
             borderRadius: radius.md,
             borderWidth: 1,
             borderColor: error ? colors.danger : colors.gray700,
-            color: colors.white,
+            color: colors.textPrimary,
             paddingHorizontal: spacing.md,
             paddingVertical: 14,
             fontSize: 15,

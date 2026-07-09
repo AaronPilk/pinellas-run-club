@@ -6,7 +6,7 @@ import { ErrorState, LoadingState, Screen, StatCard } from '@/components/ui';
 import { useAuth } from '@/hooks/useAuth';
 import { useDashboardCounts, useLapsedMembers } from '@/hooks/useAdmin';
 import { hapticLight } from '@/lib/haptics';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { MoreStackParamList, MoreStackScreenProps } from '@/types/navigation';
 
 type SectionRow = {
@@ -19,6 +19,8 @@ type SectionRow = {
 export default function AdminDashboardScreen({
   navigation,
 }: MoreStackScreenProps<'AdminDashboard'>) {
+  const { colors } = useTheme();
+
   const { isAdmin } = useAuth();
   const countsQuery = useDashboardCounts();
   const lapsedQuery = useLapsedMembers();
@@ -83,11 +85,11 @@ export default function AdminDashboardScreen({
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontSize: 20,
             fontWeight: '900',
             textTransform: 'uppercase',
@@ -151,7 +153,7 @@ export default function AdminDashboardScreen({
         >
           <Ionicons name={section.icon} size={20} color={colors.lime} style={{ marginRight: spacing.sm }} />
           <View style={{ flex: 1 }}>
-            <Text style={{ color: colors.white, fontSize: 15, fontWeight: '700' }}>{section.label}</Text>
+            <Text style={{ color: colors.textPrimary, fontSize: 15, fontWeight: '700' }}>{section.label}</Text>
             {section.detail ? (
               <Text style={{ color: colors.gray500, fontSize: 12, marginTop: 1 }}>{section.detail}</Text>
             ) : null}

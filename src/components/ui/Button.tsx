@@ -2,7 +2,7 @@ import React from 'react';
 import { ActivityIndicator, Pressable, Text, type ViewStyle } from 'react-native';
 
 import { hapticLight } from '@/lib/haptics';
-import { colors, radius } from '@/theme';
+import { radius, useTheme } from '@/theme';
 
 type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
 
@@ -26,6 +26,7 @@ export function Button({
   noHaptic,
   style,
 }: Props) {
+  const { colors } = useTheme();
   const isDisabled = Boolean(disabled || loading);
 
   const backgroundColor =
@@ -41,7 +42,7 @@ export function Button({
       : variant === 'danger'
         ? colors.white
         : variant === 'secondary'
-          ? colors.white
+          ? colors.textPrimary
           : colors.gray300;
 
   const borderColor = variant === 'secondary' ? colors.lime : colors.gray700;

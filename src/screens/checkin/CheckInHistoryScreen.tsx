@@ -6,7 +6,7 @@ import { FlatList, Pressable, Text, View } from 'react-native';
 import { EmptyState, ErrorState, LoadingState, Screen } from '@/components/ui';
 import { useMyCheckins } from '@/hooks/useCheckIn';
 import { formatEventTime, formatFullDate } from '@/lib/timeUtils';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { CheckinWithEvent } from '@/types/models';
 import type { CheckInStackScreenProps } from '@/types/navigation';
 
@@ -22,6 +22,8 @@ type Row =
   | { kind: 'checkin'; key: string; checkin: CheckinWithEvent };
 
 export default function CheckInHistoryScreen({ navigation }: CheckInStackScreenProps<'CheckInHistory'>) {
+  const { colors } = useTheme();
+
   const checkinsQuery = useMyCheckins();
 
   const rows = useMemo<Row[]>(() => {
@@ -56,11 +58,11 @@ export default function CheckInHistoryScreen({ navigation }: CheckInStackScreenP
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontSize: 20,
             fontWeight: '900',
             textTransform: 'uppercase',
@@ -131,7 +133,7 @@ export default function CheckInHistoryScreen({ navigation }: CheckInStackScreenP
                   <Ionicons name="checkmark" size={20} color={colors.lime} />
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={{ color: colors.white, fontWeight: '700', fontSize: 15 }} numberOfLines={1}>
+                  <Text style={{ color: colors.textPrimary, fontWeight: '700', fontSize: 15 }} numberOfLines={1}>
                     {checkin.event?.title ?? 'Club run'}
                   </Text>
                   <Text style={{ color: colors.gray500, fontSize: 12, marginTop: 2 }} numberOfLines={1}>

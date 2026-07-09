@@ -8,7 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useUnreadCount } from '@/hooks/useNotifications';
 import { copy } from '@/lib/copy';
 import { hapticLight } from '@/lib/haptics';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { AppTabsParamList, MoreStackScreenProps } from '@/types/navigation';
 
 type MenuItem = {
@@ -19,6 +19,8 @@ type MenuItem = {
 };
 
 export default function MoreHomeScreen({ navigation }: MoreStackScreenProps<'MoreHome'>) {
+  const { colors } = useTheme();
+
   const { isAdmin, signOut } = useAuth();
   const unreadQuery = useUnreadCount();
 
@@ -69,7 +71,7 @@ export default function MoreHomeScreen({ navigation }: MoreStackScreenProps<'Mor
     <Screen scroll>
       <Text
         style={{
-          color: colors.white,
+          color: colors.textPrimary,
           fontSize: 32,
           fontWeight: '900',
           textTransform: 'uppercase',
@@ -100,7 +102,7 @@ export default function MoreHomeScreen({ navigation }: MoreStackScreenProps<'Mor
           })}
         >
           <Ionicons name={item.icon} size={20} color={colors.lime} style={{ marginRight: spacing.sm }} />
-          <Text style={{ color: colors.white, fontSize: 15, fontWeight: '700', flex: 1 }}>
+          <Text style={{ color: colors.textPrimary, fontSize: 15, fontWeight: '700', flex: 1 }}>
             {item.label}
           </Text>
           {item.badgeCount ? (
@@ -126,7 +128,7 @@ export default function MoreHomeScreen({ navigation }: MoreStackScreenProps<'Mor
       ))}
 
       <Card style={{ marginTop: spacing.md, borderWidth: 1, borderColor: colors.lime }}>
-        <Text style={{ color: colors.white, fontSize: 18, fontWeight: '900' }}>
+        <Text style={{ color: colors.textPrimary, fontSize: 18, fontWeight: '900' }}>
           Want to partner with PRC?
         </Text>
         <Text style={{ color: colors.gray300, fontSize: 14, lineHeight: 20, marginTop: spacing.xs }}>

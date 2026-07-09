@@ -19,12 +19,14 @@ import { getErrorMessage } from '@/lib/errors';
 import { hapticError, hapticSuccess } from '@/lib/haptics';
 import { formatEventDate } from '@/lib/timeUtils';
 import { pickImage } from '@/services/mediaService';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { FeedStackScreenProps } from '@/types/navigation';
 
 const MAX_IMAGES = 4;
 
 export default function CreatePostScreen({ navigation, route }: FeedStackScreenProps<'CreatePost'>) {
+  const { colors } = useTheme();
+
   const [caption, setCaption] = useState('');
   const [locationName, setLocationName] = useState('');
   const [imageUris, setImageUris] = useState<string[]>([]);
@@ -65,7 +67,7 @@ export default function CreatePostScreen({ navigation, route }: FeedStackScreenP
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.black }} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['top', 'left', 'right']}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -81,11 +83,11 @@ export default function CreatePostScreen({ navigation, route }: FeedStackScreenP
           }}
         >
           <Pressable onPress={() => navigation.goBack()} hitSlop={12} accessibilityLabel="Close">
-            <Ionicons name="close" size={26} color={colors.white} />
+            <Ionicons name="close" size={26} color={colors.textPrimary} />
           </Pressable>
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontWeight: '900',
               fontSize: 17,
               textTransform: 'uppercase',

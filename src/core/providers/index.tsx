@@ -4,9 +4,16 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { addNotificationResponseListener } from '@/services/pushNotifications';
+import { ThemeProvider, useTheme } from '@/theme';
 
 import { AuthProvider } from './AuthProvider';
 import { QueryProvider } from './QueryProvider';
+
+/** Status bar text flips with the active theme. */
+function ThemedStatusBar() {
+  const { mode } = useTheme();
+  return <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />;
+}
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -18,12 +25,14 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <QueryProvider>
-          <AuthProvider>
-            <StatusBar style="light" />
-            {children}
-          </AuthProvider>
-        </QueryProvider>
+        <ThemeProvider>
+          <QueryProvider>
+            <AuthProvider>
+              <ThemedStatusBar />
+              {children}
+            </AuthProvider>
+          </QueryProvider>
+        </ThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

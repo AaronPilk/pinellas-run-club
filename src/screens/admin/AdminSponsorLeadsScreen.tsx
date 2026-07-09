@@ -8,7 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { getErrorMessage } from '@/lib/errors';
 import { hapticLight, hapticSuccess } from '@/lib/haptics';
 import { formatFullDate } from '@/lib/timeUtils';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { SponsorLead } from '@/types/models';
 import type { MoreStackScreenProps } from '@/types/navigation';
 
@@ -37,6 +37,8 @@ const NEXT_STATUSES: Record<string, string[]> = {
 export default function AdminSponsorLeadsScreen({
   navigation,
 }: MoreStackScreenProps<'AdminSponsorLeads'>) {
+  const { colors } = useTheme();
+
   const { isAdmin } = useAuth();
   const [statusFilter, setStatusFilter] = useState<string | undefined>(undefined);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -76,11 +78,11 @@ export default function AdminSponsorLeadsScreen({
             accessibilityRole="button"
             accessibilityLabel="Go back"
           >
-            <Ionicons name="chevron-back" size={26} color={colors.white} />
+            <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
           </Pressable>
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontSize: 20,
               fontWeight: '900',
               textTransform: 'uppercase',
@@ -155,7 +157,7 @@ export default function AdminSponsorLeadsScreen({
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <View style={{ flex: 1 }}>
-                    <Text style={{ color: colors.white, fontWeight: '800', fontSize: 15 }} numberOfLines={1}>
+                    <Text style={{ color: colors.textPrimary, fontWeight: '800', fontSize: 15 }} numberOfLines={1}>
                       {item.business_name}
                     </Text>
                     <Text style={{ color: colors.gray500, fontSize: 12, marginTop: 2 }} numberOfLines={1}>
@@ -175,12 +177,12 @@ export default function AdminSponsorLeadsScreen({
                   <View style={{ marginTop: spacing.sm }}>
                     {item.category ? (
                       <Text style={{ color: colors.gray300, fontSize: 13, marginBottom: 4 }}>
-                        Category: <Text style={{ color: colors.white }}>{item.category}</Text>
+                        Category: <Text style={{ color: colors.textPrimary }}>{item.category}</Text>
                       </Text>
                     ) : null}
                     {item.proposed_offer ? (
                       <Text style={{ color: colors.gray300, fontSize: 13, marginBottom: 4 }}>
-                        Offer: <Text style={{ color: colors.white }}>{item.proposed_offer}</Text>
+                        Offer: <Text style={{ color: colors.textPrimary }}>{item.proposed_offer}</Text>
                       </Text>
                     ) : null}
                     {item.message ? (
@@ -204,7 +206,7 @@ export default function AdminSponsorLeadsScreen({
                         }}
                       >
                         <Ionicons name="mail-outline" size={14} color={colors.lime} />
-                        <Text style={{ color: colors.white, fontSize: 12, fontWeight: '700', marginLeft: 4 }}>
+                        <Text style={{ color: colors.textPrimary, fontSize: 12, fontWeight: '700', marginLeft: 4 }}>
                           Email
                         </Text>
                       </Pressable>
@@ -223,7 +225,7 @@ export default function AdminSponsorLeadsScreen({
                           }}
                         >
                           <Ionicons name="call-outline" size={14} color={colors.lime} />
-                          <Text style={{ color: colors.white, fontSize: 12, fontWeight: '700', marginLeft: 4 }}>
+                          <Text style={{ color: colors.textPrimary, fontSize: 12, fontWeight: '700', marginLeft: 4 }}>
                             Call
                           </Text>
                         </Pressable>

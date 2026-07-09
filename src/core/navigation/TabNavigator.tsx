@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 
-import { colors } from '@/theme';
+import { useTheme } from '@/theme';
 import type { AppTabsParamList } from '@/types/navigation';
 
 import { FeedStack } from './FeedStack';
@@ -24,18 +24,20 @@ const TAB_ICONS: Record<keyof AppTabsParamList, { active: IoniconName; inactive:
 };
 
 export function TabNavigator() {
+  const { colors } = useTheme();
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: colors.black,
+          backgroundColor: colors.tabBar,
           borderTopColor: colors.charcoal,
           height: 88,
           paddingTop: 8,
         },
-        tabBarActiveTintColor: colors.lime,
-        tabBarInactiveTintColor: colors.gray300,
+        tabBarActiveTintColor: colors.tabBarActive,
+        tabBarInactiveTintColor: colors.tabBarInactive,
         tabBarLabelStyle: {
           fontSize: 11,
           fontWeight: '700',

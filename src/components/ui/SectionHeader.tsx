@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 
-import { colors, spacing } from '@/theme';
+import { spacing, useTheme } from '@/theme';
 
 type Props = {
   title: string;
@@ -10,6 +10,8 @@ type Props = {
 };
 
 export function SectionHeader({ title, actionLabel, onAction }: Props) {
+  const { colors } = useTheme();
+
   return (
     <View
       style={{
@@ -22,7 +24,7 @@ export function SectionHeader({ title, actionLabel, onAction }: Props) {
     >
       <Text
         style={{
-          color: colors.white,
+          color: colors.textPrimary,
           fontWeight: '900',
           fontSize: 18,
           textTransform: 'uppercase',

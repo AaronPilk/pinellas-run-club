@@ -5,7 +5,7 @@ import { FlatList, Pressable, Text, View } from 'react-native';
 import { EmptyState, ErrorState, LoadingState, Screen } from '@/components/ui';
 import { useAllBadges, useMyBadges } from '@/hooks/useBadges';
 import { formatFullDate } from '@/lib/timeUtils';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { Badge as BadgeModel } from '@/types/models';
 import type { ProfileStackScreenProps } from '@/types/navigation';
 
@@ -23,6 +23,8 @@ function badgeIcon(badge: BadgeModel): keyof typeof Ionicons.glyphMap {
 }
 
 export default function MyBadgesScreen({ navigation }: ProfileStackScreenProps<'MyBadges'>) {
+  const { colors } = useTheme();
+
   const allBadgesQuery = useAllBadges();
   const myBadgesQuery = useMyBadges();
 
@@ -56,12 +58,12 @@ export default function MyBadgesScreen({ navigation }: ProfileStackScreenProps<'
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <View style={{ marginLeft: spacing.xs }}>
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontSize: 20,
               fontWeight: '900',
               textTransform: 'uppercase',
@@ -125,7 +127,7 @@ export default function MyBadgesScreen({ navigation }: ProfileStackScreenProps<'
                 />
               </View>
               <Text
-                style={{ color: colors.white, fontWeight: '800', fontSize: 14, textAlign: 'center' }}
+                style={{ color: colors.textPrimary, fontWeight: '800', fontSize: 14, textAlign: 'center' }}
                 numberOfLines={2}
               >
                 {item.badge.name}

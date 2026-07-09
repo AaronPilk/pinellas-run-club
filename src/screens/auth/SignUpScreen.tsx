@@ -16,12 +16,14 @@ import { getErrorMessage } from '@/lib/errors';
 import { hapticError, hapticSuccess } from '@/lib/haptics';
 import { signUpSchema } from '@/lib/validation';
 import { signUp } from '@/services/authService';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { AuthStackScreenProps } from '@/types/navigation';
 
 const RUNNING_LEVELS = ['beginner', 'casual', 'intermediate', 'advanced'] as const;
 
 export default function SignUpScreen({ navigation, route }: AuthStackScreenProps<'SignUp'>) {
+  const { colors } = useTheme();
+
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -80,12 +82,12 @@ export default function SignUpScreen({ navigation, route }: AuthStackScreenProps
 
   if (needsEmailConfirm) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: colors.black }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
         <View style={{ flex: 1, justifyContent: 'center', padding: spacing.lg }}>
           <Ionicons name="mail-unread-outline" size={44} color={colors.lime} />
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontWeight: '900',
               fontSize: 26,
               marginTop: spacing.md,
@@ -111,7 +113,7 @@ export default function SignUpScreen({ navigation, route }: AuthStackScreenProps
 
   return (
     <SafeAreaView
-      style={{ flex: 1, backgroundColor: colors.black }}
+      style={{ flex: 1, backgroundColor: colors.background }}
       edges={['top', 'left', 'right']}
     >
       <KeyboardAvoidingView
@@ -124,12 +126,12 @@ export default function SignUpScreen({ navigation, route }: AuthStackScreenProps
           showsVerticalScrollIndicator={false}
         >
           <Pressable onPress={() => navigation.goBack()} hitSlop={12} accessibilityLabel="Back">
-            <Ionicons name="chevron-back" size={26} color={colors.white} />
+            <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
           </Pressable>
 
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontWeight: '900',
               fontSize: 30,
               textTransform: 'uppercase',

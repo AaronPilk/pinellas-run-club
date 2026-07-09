@@ -6,7 +6,7 @@ import { Badge, EmptyState, ErrorState, LoadingState, Screen } from '@/component
 import { usePartners } from '@/hooks/usePartners';
 import { copy } from '@/lib/copy';
 import { hapticLight } from '@/lib/haptics';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { Partner, PartnerCategory } from '@/types/models';
 import type { MoreStackScreenProps } from '@/types/navigation';
 
@@ -32,6 +32,8 @@ const FILTERS: { value: PartnerCategory | 'all'; label: string }[] = [
 ];
 
 function PartnerLogo({ partner, size = 52 }: { partner: Partner; size?: number }) {
+  const { colors } = useTheme();
+
   if (partner.logo_url) {
     return (
       <Image
@@ -57,6 +59,8 @@ function PartnerLogo({ partner, size = 52 }: { partner: Partner; size?: number }
 }
 
 function PartnerCard({ partner, onPress }: { partner: Partner; onPress: () => void }) {
+  const { colors } = useTheme();
+
   return (
     <Pressable
       onPress={onPress}
@@ -75,7 +79,7 @@ function PartnerCard({ partner, onPress }: { partner: Partner; onPress: () => vo
       <PartnerLogo partner={partner} />
       <View style={{ flex: 1, marginLeft: spacing.sm }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.xs }}>
-          <Text style={{ color: colors.white, fontWeight: '800', fontSize: 15, flexShrink: 1 }} numberOfLines={1}>
+          <Text style={{ color: colors.textPrimary, fontWeight: '800', fontSize: 15, flexShrink: 1 }} numberOfLines={1}>
             {partner.name}
           </Text>
           {partner.featured ? <Badge label="Featured" tone="lime" /> : null}
@@ -93,6 +97,8 @@ function PartnerCard({ partner, onPress }: { partner: Partner; onPress: () => vo
 }
 
 export default function PartnerPerksScreen({ navigation }: MoreStackScreenProps<'PartnerPerks'>) {
+  const { colors } = useTheme();
+
   const partnersQuery = usePartners();
   const [filter, setFilter] = useState<PartnerCategory | 'all'>('all');
 
@@ -116,12 +122,12 @@ export default function PartnerPerksScreen({ navigation }: MoreStackScreenProps<
             accessibilityRole="button"
             accessibilityLabel="Go back"
           >
-            <Ionicons name="chevron-back" size={26} color={colors.white} />
+            <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
           </Pressable>
           <View style={{ marginLeft: spacing.xs }}>
             <Text
               style={{
-                color: colors.white,
+                color: colors.textPrimary,
                 fontSize: 20,
                 fontWeight: '900',
                 textTransform: 'uppercase',

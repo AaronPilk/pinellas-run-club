@@ -5,10 +5,12 @@ import { Pressable, Share, Text, View } from 'react-native';
 import { Button, Card, ErrorState, Screen } from '@/components/ui';
 import { useAuth } from '@/hooks/useAuth';
 import { hapticLight } from '@/lib/haptics';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { MoreStackScreenProps } from '@/types/navigation';
 
 export default function InviteFriendScreen({ navigation }: MoreStackScreenProps<'InviteFriend'>) {
+  const { colors } = useTheme();
+
   const { profile } = useAuth();
 
   const handleShare = async () => {
@@ -32,11 +34,11 @@ export default function InviteFriendScreen({ navigation }: MoreStackScreenProps<
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontSize: 20,
             fontWeight: '900',
             textTransform: 'uppercase',
@@ -55,7 +57,7 @@ export default function InviteFriendScreen({ navigation }: MoreStackScreenProps<
             <Ionicons name="people" size={44} color={colors.lime} />
             <Text
               style={{
-                color: colors.white,
+                color: colors.textPrimary,
                 fontSize: 24,
                 fontWeight: '900',
                 textAlign: 'center',

@@ -2,7 +2,7 @@ import React from 'react';
 import { ImageBackground, Pressable, Text, View } from 'react-native';
 
 import { formatDayOfMonth, formatEventTime, formatMonthShort } from '@/lib/timeUtils';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { EventWithRsvp } from '@/types/models';
 
 import { Badge } from './ui/Badge';
@@ -13,6 +13,8 @@ type Props = {
 };
 
 export function EventCard({ event, onPress }: Props) {
+  const { colors } = useTheme();
+
   return (
     <Pressable
       onPress={onPress}
@@ -66,7 +68,7 @@ export function EventCard({ event, onPress }: Props) {
 
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontWeight: '900',
               fontSize: 24,
               textTransform: 'uppercase',
@@ -76,7 +78,7 @@ export function EventCard({ event, onPress }: Props) {
             {event.title}
           </Text>
 
-          <Text style={{ color: colors.white, marginTop: 6, fontWeight: '600' }} numberOfLines={1}>
+          <Text style={{ color: colors.textPrimary, marginTop: 6, fontWeight: '600' }} numberOfLines={1}>
             {event.location_name ?? 'Location TBD'} • {formatEventTime(event.starts_at)}
           </Text>
 

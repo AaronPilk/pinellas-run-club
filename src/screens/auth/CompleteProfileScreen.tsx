@@ -17,7 +17,7 @@ import { Avatar, Button, TextField } from '@/components/ui';
 import { getErrorMessage } from '@/lib/errors';
 import { hapticError, hapticSuccess } from '@/lib/haptics';
 import { pickImage } from '@/services/mediaService';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 
 const RUNNING_LEVELS = ['beginner', 'casual', 'intermediate', 'advanced'] as const;
 
@@ -35,6 +35,8 @@ const INTERESTS = [
 ] as const;
 
 export default function CompleteProfileScreen() {
+  const { colors } = useTheme();
+
   const { profile, refetchProfile } = useAuth();
   const uploadAvatar = useUploadAvatar();
   const updateProfile = useUpdateMyProfile();
@@ -121,7 +123,7 @@ export default function CompleteProfileScreen() {
 
   return (
     <SafeAreaView
-      style={{ flex: 1, backgroundColor: colors.black }}
+      style={{ flex: 1, backgroundColor: colors.background }}
       edges={['top', 'left', 'right']}
     >
       <KeyboardAvoidingView
@@ -135,7 +137,7 @@ export default function CompleteProfileScreen() {
         >
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontWeight: '900',
               fontSize: 30,
               textTransform: 'uppercase',
@@ -339,7 +341,7 @@ export default function CompleteProfileScreen() {
                   borderTopColor: colors.charcoal,
                 }}
               >
-                <Text style={{ color: colors.white, fontWeight: '600', fontSize: 15 }}>
+                <Text style={{ color: colors.textPrimary, fontWeight: '600', fontSize: 15 }}>
                   {row.label}
                 </Text>
                 <Switch

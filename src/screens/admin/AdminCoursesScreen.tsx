@@ -16,7 +16,7 @@ import { copy } from '@/lib/copy';
 import { getErrorMessage } from '@/lib/errors';
 import { hapticLight, hapticSuccess } from '@/lib/haptics';
 import { formatFullDate, formatSecondsToTime } from '@/lib/timeUtils';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { Course } from '@/types/models';
 import type { MoreStackScreenProps } from '@/types/navigation';
 
@@ -41,6 +41,8 @@ const EMPTY_FORM: FormState = {
 };
 
 export default function AdminCoursesScreen({ navigation }: MoreStackScreenProps<'AdminCourses'>) {
+  const { colors } = useTheme();
+
   const { isAdmin } = useAuth();
   const [tab, setTab] = useState<'courses' | 'times'>('courses');
   const [unverifiedOnly, setUnverifiedOnly] = useState(true);
@@ -156,11 +158,11 @@ export default function AdminCoursesScreen({ navigation }: MoreStackScreenProps<
             accessibilityRole="button"
             accessibilityLabel="Go back"
           >
-            <Ionicons name="chevron-back" size={26} color={colors.white} />
+            <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
           </Pressable>
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontSize: 20,
               fontWeight: '900',
               textTransform: 'uppercase',
@@ -282,7 +284,7 @@ export default function AdminCoursesScreen({ navigation }: MoreStackScreenProps<
               >
                 <View style={{ flex: 1 }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.xs }}>
-                    <Text style={{ color: colors.white, fontWeight: '800', fontSize: 15, flexShrink: 1 }} numberOfLines={1}>
+                    <Text style={{ color: colors.textPrimary, fontWeight: '800', fontSize: 15, flexShrink: 1 }} numberOfLines={1}>
                       {item.name}
                     </Text>
                     {!item.active ? <Badge label="Inactive" tone="warning" /> : null}
@@ -345,7 +347,7 @@ export default function AdminCoursesScreen({ navigation }: MoreStackScreenProps<
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Avatar uri={item.profile.avatar_url} name={item.profile.full_name} size={38} />
                 <View style={{ flex: 1, marginLeft: spacing.sm }}>
-                  <Text style={{ color: colors.white, fontWeight: '800', fontSize: 14 }} numberOfLines={1}>
+                  <Text style={{ color: colors.textPrimary, fontWeight: '800', fontSize: 14 }} numberOfLines={1}>
                     {item.profile.full_name}
                   </Text>
                   <Text style={{ color: colors.gray500, fontSize: 12, marginTop: 1 }} numberOfLines={1}>
@@ -395,7 +397,7 @@ export default function AdminCoursesScreen({ navigation }: MoreStackScreenProps<
         presentationStyle="pageSheet"
         onRequestClose={() => setShowForm(false)}
       >
-        <View style={{ flex: 1, backgroundColor: colors.black }}>
+        <View style={{ flex: 1, backgroundColor: colors.background }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', padding: spacing.md }}>
             <Pressable
               onPress={() => setShowForm(false)}
@@ -403,11 +405,11 @@ export default function AdminCoursesScreen({ navigation }: MoreStackScreenProps<
               accessibilityRole="button"
               accessibilityLabel="Close"
             >
-              <Ionicons name="close" size={26} color={colors.white} />
+              <Ionicons name="close" size={26} color={colors.textPrimary} />
             </Pressable>
             <Text
               style={{
-                color: colors.white,
+                color: colors.textPrimary,
                 fontSize: 18,
                 fontWeight: '900',
                 textTransform: 'uppercase',
@@ -462,7 +464,7 @@ export default function AdminCoursesScreen({ navigation }: MoreStackScreenProps<
                 marginBottom: spacing.sm,
               }}
             >
-              <Text style={{ color: colors.white, fontSize: 15, fontWeight: '600' }}>Active</Text>
+              <Text style={{ color: colors.textPrimary, fontSize: 15, fontWeight: '600' }}>Active</Text>
               <Switch
                 value={form.active}
                 onValueChange={(value) => setField('active', value)}
@@ -478,7 +480,7 @@ export default function AdminCoursesScreen({ navigation }: MoreStackScreenProps<
                 marginBottom: spacing.lg,
               }}
             >
-              <Text style={{ color: colors.white, fontSize: 15, fontWeight: '600' }}>Featured</Text>
+              <Text style={{ color: colors.textPrimary, fontSize: 15, fontWeight: '600' }}>Featured</Text>
               <Switch
                 value={form.featured}
                 onValueChange={(value) => setField('featured', value)}

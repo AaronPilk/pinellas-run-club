@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, Text, View } from 'react-native';
 
-import { colors } from '@/theme';
+import { useTheme } from '@/theme';
 
 type Props = {
   /** Avatar image URL; falls back to initials when missing. */
@@ -19,6 +19,8 @@ function initialsOf(name?: string | null): string {
 }
 
 export function Avatar({ uri, name, size = 40 }: Props) {
+  const { colors } = useTheme();
+
   if (uri) {
     return (
       <Image

@@ -9,10 +9,12 @@ import { getErrorMessage } from '@/lib/errors';
 import { hapticError, hapticSuccess } from '@/lib/haptics';
 import { signInSchema } from '@/lib/validation';
 import { signIn } from '@/services/authService';
-import { colors, spacing } from '@/theme';
+import { spacing, useTheme } from '@/theme';
 import type { AuthStackScreenProps } from '@/types/navigation';
 
 export default function SignInScreen({ navigation }: AuthStackScreenProps<'SignIn'>) {
+  const { colors } = useTheme();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -54,7 +56,7 @@ export default function SignInScreen({ navigation }: AuthStackScreenProps<'SignI
 
   return (
     <SafeAreaView
-      style={{ flex: 1, backgroundColor: colors.black }}
+      style={{ flex: 1, backgroundColor: colors.background }}
       edges={['top', 'left', 'right']}
     >
       <KeyboardAvoidingView
@@ -67,12 +69,12 @@ export default function SignInScreen({ navigation }: AuthStackScreenProps<'SignI
           showsVerticalScrollIndicator={false}
         >
           <Pressable onPress={() => navigation.goBack()} hitSlop={12} accessibilityLabel="Back">
-            <Ionicons name="chevron-back" size={26} color={colors.white} />
+            <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
           </Pressable>
 
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontWeight: '900',
               fontSize: 30,
               textTransform: 'uppercase',

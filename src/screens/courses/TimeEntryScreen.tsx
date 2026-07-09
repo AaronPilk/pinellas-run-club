@@ -8,12 +8,14 @@ import { copy } from '@/lib/copy';
 import { getErrorMessage } from '@/lib/errors';
 import { hapticError, hapticSuccess } from '@/lib/haptics';
 import { formatSecondsToTime, parseTimeToSeconds, toDateOnlyString } from '@/lib/timeUtils';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { MoreStackScreenProps } from '@/types/navigation';
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
 export default function TimeEntryScreen({ navigation, route }: MoreStackScreenProps<'TimeEntry'>) {
+  const { colors } = useTheme();
+
   const coursesQuery = useCourses();
   const submitTime = useSubmitTime();
 
@@ -111,7 +113,7 @@ export default function TimeEntryScreen({ navigation, route }: MoreStackScreenPr
           </View>
           <Text
             style={{
-              color: result.isPr ? colors.lime : colors.white,
+              color: result.isPr ? colors.lime : colors.textPrimary,
               fontSize: 28,
               fontWeight: '900',
               textTransform: 'uppercase',
@@ -120,7 +122,7 @@ export default function TimeEntryScreen({ navigation, route }: MoreStackScreenPr
           >
             {result.isPr ? copy.courses.newPr + '!' : 'Time Logged'}
           </Text>
-          <Text style={{ color: colors.white, fontSize: 40, fontWeight: '900', marginTop: spacing.sm }}>
+          <Text style={{ color: colors.textPrimary, fontSize: 40, fontWeight: '900', marginTop: spacing.sm }}>
             {formatSecondsToTime(result.seconds)}
           </Text>
           <Text style={{ color: colors.gray300, fontSize: 15, textAlign: 'center', marginTop: spacing.xs }}>
@@ -150,11 +152,11 @@ export default function TimeEntryScreen({ navigation, route }: MoreStackScreenPr
           accessibilityRole="button"
           accessibilityLabel="Close"
         >
-          <Ionicons name="close" size={26} color={colors.white} />
+          <Ionicons name="close" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontSize: 20,
             fontWeight: '900',
             textTransform: 'uppercase',
@@ -199,7 +201,7 @@ export default function TimeEntryScreen({ navigation, route }: MoreStackScreenPr
                 borderColor: selected ? colors.lime : colors.gray700,
               }}
             >
-              <Text style={{ color: selected ? colors.black : colors.white, fontWeight: '800', fontSize: 13 }}>
+              <Text style={{ color: selected ? colors.black : colors.textPrimary, fontWeight: '800', fontSize: 13 }}>
                 {course.name}
               </Text>
               <Text style={{ color: selected ? colors.gray700 : colors.gray500, fontSize: 11, marginTop: 1 }}>

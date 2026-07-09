@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, type ViewStyle } from 'react-native';
 
-import { colors, radius, spacing } from '@/theme';
+import { darkPalette, radius, spacing, useTheme } from '@/theme';
 
 type Props = {
   label: string;
@@ -12,6 +12,8 @@ type Props = {
 
 /** Compact stat tile (check-ins, points, streaks). */
 export function StatCard({ label, value, accent = false, style }: Props) {
+  const { colors } = useTheme();
+
   return (
     <View
       style={[
@@ -27,7 +29,7 @@ export function StatCard({ label, value, accent = false, style }: Props) {
     >
       <Text
         style={{
-          color: accent ? colors.black : colors.white,
+          color: accent ? colors.black : colors.textPrimary,
           fontWeight: '900',
           fontSize: 26,
           marginBottom: 2,
@@ -37,7 +39,8 @@ export function StatCard({ label, value, accent = false, style }: Props) {
       </Text>
       <Text
         style={{
-          color: accent ? colors.gray700 : colors.gray500,
+          // The label sits on lime when accented, so it stays dark in both modes.
+          color: accent ? darkPalette.gray700 : colors.gray500,
           fontWeight: '700',
           fontSize: 11,
           textTransform: 'uppercase',

@@ -8,12 +8,14 @@ import { useAuth } from '@/hooks/useAuth';
 import { copy } from '@/lib/copy';
 import { getErrorMessage } from '@/lib/errors';
 import { hapticSuccess } from '@/lib/haptics';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { MoreStackScreenProps } from '@/types/navigation';
 
 export default function AdminNotificationsScreen({
   navigation,
 }: MoreStackScreenProps<'AdminNotifications'>) {
+  const { colors } = useTheme();
+
   const { isAdmin } = useAuth();
   const sendAnnouncement = useSendAnnouncement();
 
@@ -88,7 +90,7 @@ export default function AdminNotificationsScreen({
           </View>
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontSize: 24,
               fontWeight: '900',
               textTransform: 'uppercase',
@@ -134,11 +136,11 @@ export default function AdminNotificationsScreen({
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontSize: 20,
             fontWeight: '900',
             textTransform: 'uppercase',
@@ -217,7 +219,7 @@ export default function AdminNotificationsScreen({
               <Text style={{ color: colors.black, fontWeight: '900', fontSize: 12 }}>PRC</Text>
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={{ color: colors.white, fontWeight: '800', fontSize: 13 }} numberOfLines={1}>
+              <Text style={{ color: colors.textPrimary, fontWeight: '800', fontSize: 13 }} numberOfLines={1}>
                 {title.trim() || 'Title'}
               </Text>
               <Text style={{ color: colors.gray300, fontSize: 12, marginTop: 1 }} numberOfLines={2}>

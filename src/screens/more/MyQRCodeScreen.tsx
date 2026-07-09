@@ -6,10 +6,12 @@ import QRCode from 'react-native-qrcode-svg';
 import { Avatar, ErrorState, LoadingState, Screen } from '@/components/ui';
 import { useAuth } from '@/hooks/useAuth';
 import { useMyPass } from '@/hooks/useMemberPass';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { MoreStackScreenProps } from '@/types/navigation';
 
 export default function MyQRCodeScreen({ navigation }: MoreStackScreenProps<'MyQRCode'>) {
+  const { colors } = useTheme();
+
   const { profile } = useAuth();
   const passQuery = useMyPass();
 
@@ -24,11 +26,11 @@ export default function MyQRCodeScreen({ navigation }: MoreStackScreenProps<'MyQ
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontSize: 20,
             fontWeight: '900',
             textTransform: 'uppercase',
@@ -49,7 +51,7 @@ export default function MyQRCodeScreen({ navigation }: MoreStackScreenProps<'MyQ
       ) : (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Avatar uri={profile.avatar_url} name={profile.full_name} size={72} />
-          <Text style={{ color: colors.white, fontSize: 20, fontWeight: '900', marginTop: spacing.sm }}>
+          <Text style={{ color: colors.textPrimary, fontSize: 20, fontWeight: '900', marginTop: spacing.sm }}>
             {profile.full_name}
           </Text>
           <Text style={{ color: colors.gray500, fontSize: 13, marginTop: 2 }}>

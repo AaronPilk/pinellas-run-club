@@ -15,7 +15,7 @@ import { getErrorMessage } from '@/lib/errors';
 import { hapticLight, hapticSuccess } from '@/lib/haptics';
 import { uploadPartnerImage } from '@/services/adminService';
 import { pickImage } from '@/services/mediaService';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { Partner, PartnerCategory, SponsorLevel } from '@/types/models';
 import type { MoreStackScreenProps } from '@/types/navigation';
 
@@ -93,6 +93,8 @@ function ChipRow<T extends string>({
   value: T;
   onChange: (value: T) => void;
 }) {
+  const { colors } = useTheme();
+
   return (
     <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: spacing.xs, marginBottom: spacing.md }}>
       {options.map((option) => {
@@ -126,6 +128,8 @@ function ChipRow<T extends string>({
 }
 
 export default function AdminPartnersScreen({ navigation }: MoreStackScreenProps<'AdminPartners'>) {
+  const { colors } = useTheme();
+
   const { isAdmin } = useAuth();
   const partnersQuery = useAdminPartners();
   const createPartner = useAdminCreatePartner();
@@ -256,11 +260,11 @@ export default function AdminPartnersScreen({ navigation }: MoreStackScreenProps
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontSize: 20,
             fontWeight: '900',
             textTransform: 'uppercase',
@@ -348,7 +352,7 @@ export default function AdminPartnersScreen({ navigation }: MoreStackScreenProps
                   </View>
                 )}
                 <View style={{ flex: 1 }}>
-                  <Text style={{ color: colors.white, fontWeight: '800', fontSize: 15 }} numberOfLines={1}>
+                  <Text style={{ color: colors.textPrimary, fontWeight: '800', fontSize: 15 }} numberOfLines={1}>
                     {item.name}
                   </Text>
                   <Text style={{ color: colors.lime, fontSize: 12, fontWeight: '700', marginTop: 1 }} numberOfLines={1}>
@@ -416,7 +420,7 @@ export default function AdminPartnersScreen({ navigation }: MoreStackScreenProps
         presentationStyle="pageSheet"
         onRequestClose={() => setShowForm(false)}
       >
-        <View style={{ flex: 1, backgroundColor: colors.black }}>
+        <View style={{ flex: 1, backgroundColor: colors.background }}>
           <View
             style={{
               flexDirection: 'row',
@@ -430,11 +434,11 @@ export default function AdminPartnersScreen({ navigation }: MoreStackScreenProps
               accessibilityRole="button"
               accessibilityLabel="Close"
             >
-              <Ionicons name="close" size={26} color={colors.white} />
+              <Ionicons name="close" size={26} color={colors.textPrimary} />
             </Pressable>
             <Text
               style={{
-                color: colors.white,
+                color: colors.textPrimary,
                 fontSize: 18,
                 fontWeight: '900',
                 textTransform: 'uppercase',
@@ -576,7 +580,7 @@ export default function AdminPartnersScreen({ navigation }: MoreStackScreenProps
                 marginBottom: spacing.sm,
               }}
             >
-              <Text style={{ color: colors.white, fontSize: 15, fontWeight: '600' }}>Active</Text>
+              <Text style={{ color: colors.textPrimary, fontSize: 15, fontWeight: '600' }}>Active</Text>
               <Switch
                 value={form.active}
                 onValueChange={(value) => setField('active', value)}
@@ -592,7 +596,7 @@ export default function AdminPartnersScreen({ navigation }: MoreStackScreenProps
                 marginBottom: spacing.lg,
               }}
             >
-              <Text style={{ color: colors.white, fontSize: 15, fontWeight: '600' }}>Featured</Text>
+              <Text style={{ color: colors.textPrimary, fontSize: 15, fontWeight: '600' }}>Featured</Text>
               <Switch
                 value={form.featured}
                 onValueChange={(value) => setField('featured', value)}

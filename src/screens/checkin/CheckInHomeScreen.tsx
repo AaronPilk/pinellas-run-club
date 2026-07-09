@@ -9,7 +9,7 @@ import { copy } from '@/lib/copy';
 import { getErrorMessage } from '@/lib/errors';
 import { hapticError, hapticSuccess } from '@/lib/haptics';
 import { formatEventDateTime, formatFullDate } from '@/lib/timeUtils';
-import { colors, spacing } from '@/theme';
+import { spacing, useTheme } from '@/theme';
 import type { CheckinWithEvent } from '@/types/models';
 import type { CheckInStackScreenProps } from '@/types/navigation';
 
@@ -21,6 +21,8 @@ const METHOD_LABELS: Record<string, string> = {
 };
 
 function RecentCheckinRow({ checkin }: { checkin: CheckinWithEvent }) {
+  const { colors } = useTheme();
+
   return (
     <View
       style={{
@@ -45,7 +47,7 @@ function RecentCheckinRow({ checkin }: { checkin: CheckinWithEvent }) {
         <Ionicons name="checkmark" size={18} color={colors.lime} />
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={{ color: colors.white, fontWeight: '700', fontSize: 14 }} numberOfLines={1}>
+        <Text style={{ color: colors.textPrimary, fontWeight: '700', fontSize: 14 }} numberOfLines={1}>
           {checkin.event?.title ?? 'Club run'}
         </Text>
         <Text style={{ color: colors.gray500, fontSize: 12, marginTop: 2 }} numberOfLines={1}>
@@ -61,6 +63,8 @@ function RecentCheckinRow({ checkin }: { checkin: CheckinWithEvent }) {
 }
 
 export default function CheckInHomeScreen({ navigation }: CheckInStackScreenProps<'CheckInHome'>) {
+  const { colors } = useTheme();
+
   const eventQuery = useCurrentCheckinableEvent();
   const statsQuery = useCheckinStats();
   const checkinsQuery = useMyCheckins();
@@ -92,7 +96,7 @@ export default function CheckInHomeScreen({ navigation }: CheckInStackScreenProp
 
   if (eventQuery.isLoading || statsQuery.isLoading || checkinsQuery.isLoading) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: colors.black }} edges={['top', 'left', 'right']}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['top', 'left', 'right']}>
         <LoadingState />
       </SafeAreaView>
     );
@@ -100,7 +104,7 @@ export default function CheckInHomeScreen({ navigation }: CheckInStackScreenProp
 
   if (eventQuery.isError) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: colors.black }} edges={['top', 'left', 'right']}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['top', 'left', 'right']}>
         <ErrorState error={eventQuery.error} onRetry={() => eventQuery.refetch()} />
       </SafeAreaView>
     );
@@ -110,7 +114,7 @@ export default function CheckInHomeScreen({ navigation }: CheckInStackScreenProp
   const streak = stats?.current_week_streak ?? 0;
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.black }} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['top', 'left', 'right']}>
       <ScrollView
         contentContainerStyle={{ padding: spacing.md, paddingBottom: 120 }}
         showsVerticalScrollIndicator={false}
@@ -139,7 +143,7 @@ export default function CheckInHomeScreen({ navigation }: CheckInStackScreenProp
         </Text>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontSize: 32,
             fontWeight: '900',
             textTransform: 'uppercase',
@@ -170,7 +174,7 @@ export default function CheckInHomeScreen({ navigation }: CheckInStackScreenProp
             >
               {alreadyCheckedIn ? 'Tonight' : 'Happening now'}
             </Text>
-            <Text style={{ color: colors.white, fontSize: 22, fontWeight: '900', marginTop: spacing.xxs }}>
+            <Text style={{ color: colors.textPrimary, fontSize: 22, fontWeight: '900', marginTop: spacing.xxs }}>
               {event.title}
             </Text>
             <Text style={{ color: colors.gray300, fontSize: 14, marginTop: spacing.xxs }}>
@@ -211,7 +215,7 @@ export default function CheckInHomeScreen({ navigation }: CheckInStackScreenProp
               <>
                 <Text
                   style={{
-                    color: colors.white,
+                    color: colors.textPrimary,
                     fontSize: 18,
                     fontWeight: '800',
                     marginTop: spacing.md,
@@ -258,7 +262,7 @@ export default function CheckInHomeScreen({ navigation }: CheckInStackScreenProp
         ) : (
           <Card style={{ alignItems: 'center', paddingVertical: spacing.xl }}>
             <Ionicons name="moon-outline" size={36} color={colors.gray500} style={{ marginBottom: spacing.sm }} />
-            <Text style={{ color: colors.white, fontWeight: '800', fontSize: 17, textAlign: 'center' }}>
+            <Text style={{ color: colors.textPrimary, fontWeight: '800', fontSize: 17, textAlign: 'center' }}>
               {copy.checkin.nothingNow}
             </Text>
             <Text
@@ -292,7 +296,7 @@ export default function CheckInHomeScreen({ navigation }: CheckInStackScreenProp
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Text style={{ fontSize: 26, marginRight: spacing.sm }}>🔥</Text>
             <View>
-              <Text style={{ color: colors.white, fontWeight: '900', fontSize: 20 }}>
+              <Text style={{ color: colors.textPrimary, fontWeight: '900', fontSize: 20 }}>
                 {streak} week{streak === 1 ? '' : 's'}
               </Text>
               <Text style={{ color: colors.gray500, fontSize: 12, fontWeight: '600' }}>

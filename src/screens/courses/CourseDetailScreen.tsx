@@ -9,7 +9,7 @@ import { Badge, Button, Card, ErrorState, LoadingState, Screen } from '@/compone
 import { useCourseDetail, useMyCourseEntries } from '@/hooks/useCourses';
 import { copy } from '@/lib/copy';
 import { formatFullDate, formatPace, formatSecondsToTime } from '@/lib/timeUtils';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { CourseTimeEntryWithCourse } from '@/types/models';
 import type { MoreStackScreenProps } from '@/types/navigation';
 
@@ -21,6 +21,8 @@ const CHART_PADDING = 16;
  * so faster times sit higher). PR point highlighted in lime.
  */
 function ProgressChart({ entries, width }: { entries: CourseTimeEntryWithCourse[]; width: number }) {
+  const { colors } = useTheme();
+
   const sorted = useMemo(
     () =>
       [...entries].sort(
@@ -97,6 +99,8 @@ export default function CourseDetailScreen({
   navigation,
   route,
 }: MoreStackScreenProps<'CourseDetail'>) {
+  const { colors } = useTheme();
+
   const { courseId } = route.params;
   const courseQuery = useCourseDetail(courseId);
   const entriesQuery = useMyCourseEntries(courseId);
@@ -136,11 +140,11 @@ export default function CourseDetailScreen({
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontSize: 20,
             fontWeight: '900',
             textTransform: 'uppercase',
@@ -226,7 +230,7 @@ export default function CourseDetailScreen({
           >
             Runs Logged
           </Text>
-          <Text style={{ color: colors.white, fontSize: 24, fontWeight: '900', marginTop: 2 }}>
+          <Text style={{ color: colors.textPrimary, fontSize: 24, fontWeight: '900', marginTop: 2 }}>
             {entries.length}
           </Text>
         </Card>
@@ -262,7 +266,7 @@ export default function CourseDetailScreen({
               <Text style={{ color: colors.gray300, fontSize: 13, flex: 1 }}>
                 {formatFullDate(entry.run_date)}
               </Text>
-              <Text style={{ color: colors.white, fontSize: 15, fontWeight: '800' }}>
+              <Text style={{ color: colors.textPrimary, fontSize: 15, fontWeight: '800' }}>
                 {formatSecondsToTime(entry.time_seconds)}
               </Text>
               {entry.time_seconds === best ? (

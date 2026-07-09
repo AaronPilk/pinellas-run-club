@@ -4,7 +4,7 @@ import { Alert, Linking, Pressable, Text, View } from 'react-native';
 
 import { Button, Screen } from '@/components/ui';
 import { hapticLight } from '@/lib/haptics';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { MoreStackScreenProps } from '@/types/navigation';
 
 const SUPPORT_EMAIL = 'pinellasrunclub@gmail.com';
@@ -45,6 +45,8 @@ const FAQS = [
 ];
 
 export default function HelpSupportScreen({ navigation }: MoreStackScreenProps<'HelpSupport'>) {
+  const { colors } = useTheme();
+
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const openLink = (url: string) => {
@@ -60,11 +62,11 @@ export default function HelpSupportScreen({ navigation }: MoreStackScreenProps<'
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontSize: 20,
             fontWeight: '900',
             textTransform: 'uppercase',
@@ -106,7 +108,7 @@ export default function HelpSupportScreen({ navigation }: MoreStackScreenProps<'
             }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{ color: colors.white, fontSize: 15, fontWeight: '700', flex: 1 }}>
+              <Text style={{ color: colors.textPrimary, fontSize: 15, fontWeight: '700', flex: 1 }}>
                 {faq.question}
               </Text>
               <Ionicons

@@ -5,13 +5,15 @@ import { FlatList, Pressable, Text, View } from 'react-native';
 import { Badge, EmptyState, ErrorState, LoadingState, Screen } from '@/components/ui';
 import { useMyCourseEntries } from '@/hooks/useCourses';
 import { formatFullDate, formatPace, formatSecondsToTime } from '@/lib/timeUtils';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { MoreStackScreenProps } from '@/types/navigation';
 
 export default function CourseHistoryScreen({
   navigation,
   route,
 }: MoreStackScreenProps<'CourseHistory'>) {
+  const { colors } = useTheme();
+
   const courseId = route.params?.courseId;
   const entriesQuery = useMyCourseEntries(courseId);
 
@@ -47,11 +49,11 @@ export default function CourseHistoryScreen({
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontSize: 20,
             fontWeight: '900',
             textTransform: 'uppercase',
@@ -92,7 +94,7 @@ export default function CourseHistoryScreen({
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <View style={{ flex: 1 }}>
-                    <Text style={{ color: colors.white, fontWeight: '800', fontSize: 16 }}>
+                    <Text style={{ color: colors.textPrimary, fontWeight: '800', fontSize: 16 }}>
                       {formatSecondsToTime(item.time_seconds)}
                       <Text style={{ color: colors.gray500, fontSize: 13, fontWeight: '600' }}>
                         {'  '}

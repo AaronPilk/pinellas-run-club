@@ -8,7 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useMyEvents, usePastEvents, useRsvp, useUpcomingEvents } from '@/hooks/useEvents';
 import { copy } from '@/lib/copy';
 import { hapticSuccess } from '@/lib/haptics';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { EventWithRsvp } from '@/types/models';
 import type { EventsStackScreenProps } from '@/types/navigation';
 
@@ -30,6 +30,8 @@ function EventListItem({
   showQuickRsvp: boolean;
   onPress: () => void;
 }) {
+  const { colors } = useTheme();
+
   const rsvp = useRsvp(event.id);
 
   return (
@@ -68,6 +70,8 @@ function EventListItem({
 }
 
 export default function EventsHomeScreen({ navigation }: EventsStackScreenProps<'EventsHome'>) {
+  const { colors } = useTheme();
+
   const { isAdmin } = useAuth();
   const [filter, setFilter] = useState<Filter>('upcoming');
 
@@ -126,7 +130,7 @@ export default function EventsHomeScreen({ navigation }: EventsStackScreenProps<
       <View style={{ paddingHorizontal: spacing.md, paddingTop: spacing.sm }}>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontWeight: '900',
             fontSize: 26,
             textTransform: 'uppercase',

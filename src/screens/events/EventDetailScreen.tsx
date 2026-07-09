@@ -12,7 +12,7 @@ import { copy } from '@/lib/copy';
 import { getErrorMessage } from '@/lib/errors';
 import { hapticError, hapticSuccess } from '@/lib/haptics';
 import { formatEventDateTime, formatEventTime } from '@/lib/timeUtils';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { EventDetail, RsvpStatus } from '@/types/models';
 import type { AppTabsParamList, EventsStackScreenProps } from '@/types/navigation';
 
@@ -37,6 +37,8 @@ export default function EventDetailScreen({
   navigation,
   route,
 }: EventsStackScreenProps<'EventDetail'>) {
+  const { colors } = useTheme();
+
   const { eventId } = route.params;
   const { isAdmin } = useAuth();
   const event = useEvent(eventId);
@@ -119,7 +121,7 @@ export default function EventDetailScreen({
           </View>
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontWeight: '900',
               fontSize: 28,
               textTransform: 'uppercase',
@@ -196,7 +198,7 @@ export default function EventDetailScreen({
           {/* RSVP */}
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontWeight: '900',
               fontSize: 18,
               textTransform: 'uppercase',
@@ -288,7 +290,7 @@ export default function EventDetailScreen({
           >
             <Text
               style={{
-                color: colors.white,
+                color: colors.textPrimary,
                 fontWeight: '900',
                 fontSize: 18,
                 textTransform: 'uppercase',
@@ -356,7 +358,7 @@ export default function EventDetailScreen({
               style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.sm }}
             >
               <Ionicons name="share-outline" size={20} color={colors.lime} />
-              <Text style={{ color: colors.white, fontWeight: '700', fontSize: 15 }}>
+              <Text style={{ color: colors.textPrimary, fontWeight: '700', fontSize: 15 }}>
                 Share event
               </Text>
             </Pressable>
@@ -387,7 +389,7 @@ export default function EventDetailScreen({
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.black }} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }} edges={['top', 'left', 'right']}>
       {/* Header */}
       <View
         style={{
@@ -399,11 +401,11 @@ export default function EventDetailScreen({
         }}
       >
         <Pressable onPress={() => navigation.goBack()} hitSlop={12} accessibilityLabel="Back">
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontWeight: '900',
             fontSize: 17,
             textTransform: 'uppercase',

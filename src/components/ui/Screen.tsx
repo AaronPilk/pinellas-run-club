@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, View, type ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { colors, spacing } from '@/theme';
+import { spacing, useTheme } from '@/theme';
 
 type Props = {
   children: React.ReactNode;
@@ -10,7 +10,7 @@ type Props = {
   scroll?: boolean;
   style?: ViewStyle;
   contentContainerStyle?: ViewStyle;
-  /** Default true: near-black background. Pass false for off-white screens. */
+  /** Default true: theme background. Pass false for always-off-white screens. */
   dark?: boolean;
   /** Remove default padding (e.g. full-bleed lists). */
   noPadding?: boolean;
@@ -24,7 +24,8 @@ export function Screen({
   dark = true,
   noPadding = false,
 }: Props) {
-  const backgroundColor = dark ? colors.black : colors.offWhite;
+  const { colors } = useTheme();
+  const backgroundColor = dark ? colors.background : colors.offWhite;
   const padding = noPadding ? 0 : spacing.md;
 
   if (scroll) {

@@ -7,7 +7,7 @@ import { useSubmitSponsorLead } from '@/hooks/usePartners';
 import { getErrorMessage } from '@/lib/errors';
 import { hapticLight, hapticSuccess } from '@/lib/haptics';
 import { sponsorLeadSchema } from '@/lib/validation';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { MoreStackScreenProps } from '@/types/navigation';
 
 const CATEGORIES = [
@@ -21,6 +21,8 @@ const CATEGORIES = [
 ];
 
 export default function SponsorshipScreen({ navigation }: MoreStackScreenProps<'Sponsorship'>) {
+  const { colors } = useTheme();
+
   const submitLead = useSubmitSponsorLead();
 
   const [form, setForm] = useState({
@@ -86,7 +88,7 @@ export default function SponsorshipScreen({ navigation }: MoreStackScreenProps<'
           </View>
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontSize: 24,
               fontWeight: '900',
               textAlign: 'center',
@@ -126,11 +128,11 @@ export default function SponsorshipScreen({ navigation }: MoreStackScreenProps<'
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontSize: 20,
             fontWeight: '900',
             textTransform: 'uppercase',
@@ -141,7 +143,7 @@ export default function SponsorshipScreen({ navigation }: MoreStackScreenProps<'
         </Text>
       </View>
 
-      <Text style={{ color: colors.white, fontSize: 24, fontWeight: '900', marginBottom: spacing.xs }}>
+      <Text style={{ color: colors.textPrimary, fontSize: 24, fontWeight: '900', marginBottom: spacing.xs }}>
         Want to partner with PRC?
       </Text>
       <Text style={{ color: colors.gray300, fontSize: 14, lineHeight: 21, marginBottom: spacing.lg }}>

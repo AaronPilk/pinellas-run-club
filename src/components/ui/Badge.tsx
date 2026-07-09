@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, type ViewStyle } from 'react-native';
 
-import { colors, radius } from '@/theme';
+import { radius, useTheme } from '@/theme';
 
 type Tone = 'lime' | 'neutral' | 'warning' | 'danger' | 'success';
 
@@ -11,17 +11,18 @@ type Props = {
   style?: ViewStyle;
 };
 
-const TONES: Record<Tone, { bg: string; text: string }> = {
-  lime: { bg: colors.lime, text: colors.black },
-  neutral: { bg: colors.gray700, text: colors.white },
-  warning: { bg: colors.warning, text: colors.black },
-  danger: { bg: colors.danger, text: colors.white },
-  success: { bg: colors.success, text: colors.black },
-};
-
 /** Small pill label ("GOING", "PENDING", "NEW PR"...). */
 export function Badge({ label, tone = 'neutral', style }: Props) {
-  const { bg, text } = TONES[tone];
+  const { colors } = useTheme();
+
+  const tones: Record<Tone, { bg: string; text: string }> = {
+    lime: { bg: colors.lime, text: colors.black },
+    neutral: { bg: colors.gray700, text: colors.textPrimary },
+    warning: { bg: colors.warning, text: colors.black },
+    danger: { bg: colors.danger, text: colors.white },
+    success: { bg: colors.success, text: colors.black },
+  };
+  const { bg, text } = tones[tone];
 
   return (
     <View

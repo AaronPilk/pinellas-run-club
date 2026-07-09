@@ -8,10 +8,12 @@ import { Badge, Button, EmptyState, ErrorState, LoadingState, Screen } from '@/c
 import { useAuth } from '@/hooks/useAuth';
 import { useMyPass } from '@/hooks/useMemberPass';
 import { copy } from '@/lib/copy';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { AppTabsParamList, ProfileStackScreenProps } from '@/types/navigation';
 
 export default function MemberPassScreen({ navigation }: ProfileStackScreenProps<'MemberPass'>) {
+  const { colors } = useTheme();
+
   const { profile } = useAuth();
   const passQuery = useMyPass();
 
@@ -30,11 +32,11 @@ export default function MemberPassScreen({ navigation }: ProfileStackScreenProps
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontSize: 20,
             fontWeight: '900',
             textTransform: 'uppercase',
@@ -112,7 +114,7 @@ export default function MemberPassScreen({ navigation }: ProfileStackScreenProps
             >
               Member
             </Text>
-            <Text style={{ color: colors.white, fontSize: 24, fontWeight: '900', marginBottom: spacing.xs }}>
+            <Text style={{ color: colors.textPrimary, fontSize: 24, fontWeight: '900', marginBottom: spacing.xs }}>
               {profile.full_name}
             </Text>
             <Text style={{ color: colors.gray300, fontSize: 13, fontWeight: '600', marginBottom: spacing.lg }}>

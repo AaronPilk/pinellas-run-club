@@ -9,7 +9,7 @@ import { useMyProfile, useUpdateMyProfile } from '@/hooks/useMyProfile';
 import { copy } from '@/lib/copy';
 import { getErrorMessage } from '@/lib/errors';
 import { hapticLight } from '@/lib/haptics';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { ProfileStackScreenProps } from '@/types/navigation';
 
 const SUPPORT_EMAIL = 'pinellasrunclub@gmail.com';
@@ -23,7 +23,15 @@ const NOTIFICATION_PREFS = [
 
 type PrefKey = (typeof NOTIFICATION_PREFS)[number]['key'];
 
+const THEME_OPTIONS = [
+  { key: 'system', label: 'System' },
+  { key: 'dark', label: 'Dark' },
+  { key: 'light', label: 'Light' },
+] as const;
+
 function SectionLabel({ children }: { children: string }) {
+  const { colors } = useTheme();
+
   return (
     <Text
       style={{
@@ -42,6 +50,7 @@ function SectionLabel({ children }: { children: string }) {
 }
 
 export default function SettingsScreen({ navigation }: ProfileStackScreenProps<'Settings'>) {
+  const { colors, preference, setPreference } = useTheme();
   const { signOut } = useAuth();
   const profileQuery = useMyProfile();
   const updateProfile = useUpdateMyProfile();
@@ -122,11 +131,11 @@ export default function SettingsScreen({ navigation }: ProfileStackScreenProps<'
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontSize: 20,
             fontWeight: '900',
             textTransform: 'uppercase',
@@ -135,6 +144,41 @@ export default function SettingsScreen({ navigation }: ProfileStackScreenProps<'
         >
           Settings
         </Text>
+      </View>
+
+      <SectionLabel>Appearance</SectionLabel>
+      <View style={{ flexDirection: 'row', gap: spacing.xs }}>
+        {THEME_OPTIONS.map((option) => {
+          const active = preference === option.key;
+          return (
+            <Pressable
+              key={option.key}
+              onPress={() => {
+                hapticLight();
+                setPreference(option.key);
+              }}
+              accessibilityRole="button"
+              accessibilityState={{ selected: active }}
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                paddingVertical: spacing.sm,
+                borderRadius: radius.md,
+                backgroundColor: active ? colors.lime : colors.darkCard,
+              }}
+            >
+              <Text
+                style={{
+                  color: active ? colors.black : colors.gray300,
+                  fontWeight: '800',
+                  fontSize: 13,
+                }}
+              >
+                {option.label}
+              </Text>
+            </Pressable>
+          );
+        })}
       </View>
 
       <SectionLabel>Notifications</SectionLabel>
@@ -151,7 +195,7 @@ export default function SettingsScreen({ navigation }: ProfileStackScreenProps<'
               borderTopColor: colors.charcoal,
             }}
           >
-            <Text style={{ color: colors.white, fontSize: 15, fontWeight: '600' }}>{pref.label}</Text>
+            <Text style={{ color: colors.textPrimary, fontSize: 15, fontWeight: '600' }}>{pref.label}</Text>
             <Switch
               value={prefValue(pref.key)}
               onValueChange={(value) => togglePref(pref.key, value)}
@@ -167,7 +211,7 @@ export default function SettingsScreen({ navigation }: ProfileStackScreenProps<'
         <Text style={{ color: colors.gray500, fontSize: 12, fontWeight: '700', marginBottom: 2 }}>
           Signed in as
         </Text>
-        <Text style={{ color: colors.white, fontSize: 15, fontWeight: '600' }}>{profile.email}</Text>
+        <Text style={{ color: colors.textPrimary, fontSize: 15, fontWeight: '600' }}>{profile.email}</Text>
       </View>
 
       <SectionLabel>Support</SectionLabel>
@@ -188,7 +232,7 @@ export default function SettingsScreen({ navigation }: ProfileStackScreenProps<'
         })}
       >
         <Ionicons name="mail-outline" size={20} color={colors.lime} style={{ marginRight: spacing.sm }} />
-        <Text style={{ color: colors.white, fontSize: 15, fontWeight: '700', flex: 1 }}>
+        <Text style={{ color: colors.textPrimary, fontSize: 15, fontWeight: '700', flex: 1 }}>
           Contact Support
         </Text>
         <Ionicons name="chevron-forward" size={18} color={colors.gray500} />

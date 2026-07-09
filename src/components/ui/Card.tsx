@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, View, type ViewStyle } from 'react-native';
 
-import { colors, radius, shadows, spacing } from '@/theme';
+import { radius, shadows, spacing, useTheme } from '@/theme';
 
 type Props = {
   children: React.ReactNode;
@@ -10,8 +10,10 @@ type Props = {
 };
 
 export function Card({ children, onPress, style }: Props) {
+  const { colors } = useTheme();
+
   const base: ViewStyle = {
-    backgroundColor: colors.darkCard,
+    backgroundColor: colors.card,
     borderRadius: radius.lg,
     padding: spacing.md,
     ...shadows.card,

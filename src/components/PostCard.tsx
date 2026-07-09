@@ -3,7 +3,7 @@ import React from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
 
 import { formatRelativeTime } from '@/lib/timeUtils';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { FeedPostWithAuthor } from '@/types/models';
 
 import { Avatar } from './ui/Avatar';
@@ -18,6 +18,8 @@ type Props = {
 };
 
 export function PostCard({ post, onPressAuthor, onPressPost, onToggleLike, onPressComments }: Props) {
+  const { colors } = useTheme();
+
   const firstImage = post.media[0];
 
   return (
@@ -42,7 +44,7 @@ export function PostCard({ post, onPressAuthor, onPressPost, onToggleLike, onPre
       >
         <Avatar uri={post.author?.avatar_url} name={post.author?.full_name} size={36} />
         <View style={{ flex: 1 }}>
-          <Text style={{ color: colors.white, fontWeight: '800', fontSize: 14 }} numberOfLines={1}>
+          <Text style={{ color: colors.textPrimary, fontWeight: '800', fontSize: 14 }} numberOfLines={1}>
             {post.author?.full_name ?? 'Member'}
           </Text>
           {post.location_name ? (

@@ -6,11 +6,13 @@ import { Badge, Button, EmptyState, ErrorState, LoadingState, Screen } from '@/c
 import { useCourses } from '@/hooks/useCourses';
 import { copy } from '@/lib/copy';
 import { formatSecondsToTime } from '@/lib/timeUtils';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { CourseWithBestTime } from '@/types/models';
 import type { MoreStackScreenProps } from '@/types/navigation';
 
 function TimeStat({ label, value }: { label: string; value: string }) {
+  const { colors } = useTheme();
+
   return (
     <View style={{ flex: 1 }}>
       <Text
@@ -24,7 +26,7 @@ function TimeStat({ label, value }: { label: string; value: string }) {
       >
         {label}
       </Text>
-      <Text style={{ color: colors.white, fontSize: 18, fontWeight: '900', marginTop: 2 }}>
+      <Text style={{ color: colors.textPrimary, fontSize: 18, fontWeight: '900', marginTop: 2 }}>
         {value}
       </Text>
     </View>
@@ -41,6 +43,8 @@ function isNewPr(course: CourseWithBestTime): boolean {
 }
 
 export default function CoursesScreen({ navigation }: MoreStackScreenProps<'Courses'>) {
+  const { colors } = useTheme();
+
   const coursesQuery = useCourses();
 
   return (
@@ -59,12 +63,12 @@ export default function CoursesScreen({ navigation }: MoreStackScreenProps<'Cour
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <View style={{ marginLeft: spacing.xs }}>
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontSize: 20,
               fontWeight: '900',
               textTransform: 'uppercase',
@@ -104,7 +108,7 @@ export default function CoursesScreen({ navigation }: MoreStackScreenProps<'Cour
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View style={{ flex: 1 }}>
-                  <Text style={{ color: colors.white, fontSize: 18, fontWeight: '900' }} numberOfLines={1}>
+                  <Text style={{ color: colors.textPrimary, fontSize: 18, fontWeight: '900' }} numberOfLines={1}>
                     {item.name}
                   </Text>
                   <Text style={{ color: colors.gray500, fontSize: 13, marginTop: 2 }}>

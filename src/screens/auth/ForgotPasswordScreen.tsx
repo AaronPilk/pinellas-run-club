@@ -7,12 +7,14 @@ import { Button, TextField } from '@/components/ui';
 import { getErrorMessage } from '@/lib/errors';
 import { hapticError, hapticSuccess } from '@/lib/haptics';
 import { resetPassword } from '@/services/authService';
-import { colors, spacing } from '@/theme';
+import { spacing, useTheme } from '@/theme';
 import type { AuthStackScreenProps } from '@/types/navigation';
 
 export default function ForgotPasswordScreen({
   navigation,
 }: AuthStackScreenProps<'ForgotPassword'>) {
+  const { colors } = useTheme();
+
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -40,7 +42,7 @@ export default function ForgotPasswordScreen({
 
   return (
     <SafeAreaView
-      style={{ flex: 1, backgroundColor: colors.black }}
+      style={{ flex: 1, backgroundColor: colors.background }}
       edges={['top', 'left', 'right']}
     >
       <KeyboardAvoidingView
@@ -53,7 +55,7 @@ export default function ForgotPasswordScreen({
           showsVerticalScrollIndicator={false}
         >
           <Pressable onPress={() => navigation.goBack()} hitSlop={12} accessibilityLabel="Back">
-            <Ionicons name="chevron-back" size={26} color={colors.white} />
+            <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
           </Pressable>
 
           {sent ? (
@@ -61,7 +63,7 @@ export default function ForgotPasswordScreen({
               <Ionicons name="mail-unread-outline" size={44} color={colors.lime} />
               <Text
                 style={{
-                  color: colors.white,
+                  color: colors.textPrimary,
                   fontWeight: '900',
                   fontSize: 26,
                   textTransform: 'uppercase',
@@ -90,7 +92,7 @@ export default function ForgotPasswordScreen({
             <>
               <Text
                 style={{
-                  color: colors.white,
+                  color: colors.textPrimary,
                   fontWeight: '900',
                   fontSize: 30,
                   textTransform: 'uppercase',

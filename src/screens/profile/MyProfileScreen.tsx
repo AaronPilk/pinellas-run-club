@@ -10,7 +10,7 @@ import { useCheckinStats } from '@/hooks/useCheckIn';
 import { useMyProfile } from '@/hooks/useMyProfile';
 import { copy } from '@/lib/copy';
 import { hapticLight } from '@/lib/haptics';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { AppTabsParamList, ProfileStackScreenProps } from '@/types/navigation';
 
 type ActionRow = {
@@ -21,11 +21,13 @@ type ActionRow = {
 };
 
 function ProfileFact({ icon, label, value }: { icon: keyof typeof Ionicons.glyphMap; label: string; value: string }) {
+  const { colors } = useTheme();
+
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: spacing.sm }}>
       <Ionicons name={icon} size={16} color={colors.lime} style={{ width: 24 }} />
       <Text style={{ color: colors.gray500, fontSize: 13, width: 110 }}>{label}</Text>
-      <Text style={{ color: colors.white, fontSize: 14, fontWeight: '600', flex: 1 }} numberOfLines={1}>
+      <Text style={{ color: colors.textPrimary, fontSize: 14, fontWeight: '600', flex: 1 }} numberOfLines={1}>
         {value}
       </Text>
     </View>
@@ -33,6 +35,8 @@ function ProfileFact({ icon, label, value }: { icon: keyof typeof Ionicons.glyph
 }
 
 export default function MyProfileScreen({ navigation }: ProfileStackScreenProps<'MyProfile'>) {
+  const { colors } = useTheme();
+
   const { signOut } = useAuth();
   const profileQuery = useMyProfile();
   const statsQuery = useCheckinStats();
@@ -99,7 +103,7 @@ export default function MyProfileScreen({ navigation }: ProfileStackScreenProps<
     <Screen scroll>
       <View style={{ alignItems: 'center', marginTop: spacing.sm }}>
         <Avatar uri={profile.avatar_url} name={profile.full_name} size={96} />
-        <Text style={{ color: colors.white, fontSize: 24, fontWeight: '900', marginTop: spacing.sm }}>
+        <Text style={{ color: colors.textPrimary, fontSize: 24, fontWeight: '900', marginTop: spacing.sm }}>
           {profile.full_name}
         </Text>
         {profile.username ? (
@@ -201,7 +205,7 @@ export default function MyProfileScreen({ navigation }: ProfileStackScreenProps<
             />
             <Text
               style={{
-                color: action.danger ? colors.danger : colors.white,
+                color: action.danger ? colors.danger : colors.textPrimary,
                 fontSize: 15,
                 fontWeight: '700',
                 flex: 1,

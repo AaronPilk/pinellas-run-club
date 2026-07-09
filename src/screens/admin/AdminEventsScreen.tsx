@@ -11,7 +11,7 @@ import { usePastEvents, useUpcomingEvents } from '@/hooks/useEvents';
 import { getErrorMessage } from '@/lib/errors';
 import { hapticLight, hapticSuccess } from '@/lib/haptics';
 import { formatEventDateTime } from '@/lib/timeUtils';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { EventStatus, EventWithRsvp } from '@/types/models';
 import type { AppTabsParamList, MoreStackScreenProps } from '@/types/navigation';
 
@@ -23,6 +23,8 @@ const STATUS_TONES: Record<EventStatus, 'lime' | 'neutral' | 'warning' | 'danger
 };
 
 export default function AdminEventsScreen({ navigation }: MoreStackScreenProps<'AdminEvents'>) {
+  const { colors } = useTheme();
+
   const { isAdmin } = useAuth();
   const upcomingQuery = useUpcomingEvents();
   const pastQuery = usePastEvents();
@@ -120,11 +122,11 @@ export default function AdminEventsScreen({ navigation }: MoreStackScreenProps<'
           accessibilityRole="button"
           accessibilityLabel="Go back"
         >
-          <Ionicons name="chevron-back" size={26} color={colors.white} />
+          <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
         </Pressable>
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontSize: 20,
             fontWeight: '900',
             textTransform: 'uppercase',
@@ -187,7 +189,7 @@ export default function AdminEventsScreen({ navigation }: MoreStackScreenProps<'
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View style={{ flex: 1 }}>
-                  <Text style={{ color: colors.white, fontWeight: '800', fontSize: 15 }} numberOfLines={1}>
+                  <Text style={{ color: colors.textPrimary, fontWeight: '800', fontSize: 15 }} numberOfLines={1}>
                     {item.title}
                   </Text>
                   <Text style={{ color: colors.gray500, fontSize: 12, marginTop: 2 }} numberOfLines={1}>
@@ -231,7 +233,7 @@ export default function AdminEventsScreen({ navigation }: MoreStackScreenProps<'
           >
             <Text
               style={{
-                color: colors.white,
+                color: colors.textPrimary,
                 fontSize: 18,
                 fontWeight: '900',
                 textAlign: 'center',

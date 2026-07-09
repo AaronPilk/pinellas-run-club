@@ -1,10 +1,10 @@
-import { DarkTheme, NavigationContainer } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 
 import { useAuth } from '@/core/providers/AuthProvider';
-import { colors } from '@/theme';
+import { useTheme } from '@/theme';
 import type { RootStackParamList } from '@/types/navigation';
 
 import PendingApprovalScreen from '@/screens/auth/PendingApprovalScreen';
@@ -17,31 +17,21 @@ import { linking } from './linking';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const navTheme = {
-  ...DarkTheme,
-  colors: {
-    ...DarkTheme.colors,
-    background: colors.black,
-    card: colors.black,
-    primary: colors.lime,
-    text: colors.white,
-    border: colors.charcoal,
-  },
-};
-
 function Splash() {
+  const { colors } = useTheme();
+
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: colors.black,
+        backgroundColor: colors.background,
         alignItems: 'center',
         justifyContent: 'center',
       }}
     >
       <Text
         style={{
-          color: colors.white,
+          color: colors.textPrimary,
           fontWeight: '900',
           fontSize: 24,
           textTransform: 'uppercase',
@@ -65,6 +55,22 @@ function Splash() {
  */
 export function RootNavigator() {
   const { session, profile, loading, isApproved, isPending, isSuspended } = useAuth();
+  const { colors, mode } = useTheme();
+
+  const navTheme = React.useMemo(() => {
+    const base = mode === 'dark' ? DarkTheme : DefaultTheme;
+    return {
+      ...base,
+      colors: {
+        ...base.colors,
+        background: colors.background,
+        card: colors.background,
+        primary: colors.lime,
+        text: colors.textPrimary,
+        border: colors.charcoal,
+      },
+    };
+  }, [colors, mode]);
 
   if (loading) {
     return <Splash />;

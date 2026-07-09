@@ -1,23 +1,30 @@
 import { Ionicons } from '@expo/vector-icons';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import React, { useMemo, useState } from 'react';
 import { FlatList, Pressable, RefreshControl, Text, View } from 'react-native';
 
 import { PostCard } from '@/components/PostCard';
 import { EmptyState, ErrorState, LoadingState, Screen, SectionHeader } from '@/components/ui';
 import { useFeed, usePinnedPosts, useToggleLike } from '@/hooks/useFeed';
+import { useUnreadCount } from '@/hooks/useNotifications';
 import { copy } from '@/lib/copy';
 import { hapticLight } from '@/lib/haptics';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { FeedPostWithAuthor } from '@/types/models';
-import type { FeedStackScreenProps } from '@/types/navigation';
+import type { AppTabsParamList, FeedStackScreenProps } from '@/types/navigation';
 
 type FeedTab = 'all' | 'following';
 
 export default function FeedHomeScreen({ navigation }: FeedStackScreenProps<'FeedHome'>) {
+  const { colors } = useTheme();
   const [tab, setTab] = useState<FeedTab>('all');
   const feed = useFeed();
   const pinned = usePinnedPosts();
   const toggleLike = useToggleLike();
+  const unreadQuery = useUnreadCount();
+
+  const unread = unreadQuery.data ?? 0;
+  const tabNav = navigation.getParent<BottomTabNavigationProp<AppTabsParamList>>();
 
   const posts = useMemo(
     () => feed.data?.pages.flatMap((page) => page.posts) ?? [],
@@ -89,7 +96,7 @@ export default function FeedHomeScreen({ navigation }: FeedStackScreenProps<'Fee
       >
         <Text
           style={{
-            color: colors.white,
+            color: colors.textPrimary,
             fontWeight: '900',
             fontSize: 20,
             textTransform: 'uppercase',
@@ -99,14 +106,46 @@ export default function FeedHomeScreen({ navigation }: FeedStackScreenProps<'Fee
         >
           Pinellas <Text style={{ color: colors.lime }}>Run Club</Text>
         </Text>
-        <Pressable
-          onPress={() => navigation.navigate('CreatePost', undefined)}
-          hitSlop={8}
-          accessibilityRole="button"
-          accessibilityLabel={copy.feed.newPost}
-        >
-          <Ionicons name="add-circle" size={30} color={colors.lime} />
-        </Pressable>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.md }}>
+          <Pressable
+            onPress={() => tabNav?.navigate('MoreTab', { screen: 'Notifications' })}
+            hitSlop={8}
+            accessibilityRole="button"
+            accessibilityLabel={
+              unread > 0 ? `Notifications, ${unread} unread` : 'Notifications'
+            }
+          >
+            <Ionicons name="notifications-outline" size={26} color={colors.textPrimary} />
+            {unread > 0 ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -4,
+                  right: -6,
+                  minWidth: 16,
+                  height: 16,
+                  borderRadius: 8,
+                  paddingHorizontal: 3,
+                  backgroundColor: colors.lime,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Text style={{ color: colors.black, fontSize: 10, fontWeight: '900' }}>
+                  {unread > 99 ? '99+' : unread}
+                </Text>
+              </View>
+            ) : null}
+          </Pressable>
+          <Pressable
+            onPress={() => navigation.navigate('CreatePost', undefined)}
+            hitSlop={8}
+            accessibilityRole="button"
+            accessibilityLabel={copy.feed.newPost}
+          >
+            <Ionicons name="add-circle" size={30} color={colors.lime} />
+          </Pressable>
+        </View>
       </View>
 
       {/* All / Following tabs */}

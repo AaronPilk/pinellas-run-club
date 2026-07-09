@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 
 import { Button, Screen } from '@/components/ui';
 import { copy } from '@/lib/copy';
-import { colors, spacing } from '@/theme';
+import { spacing, useTheme } from '@/theme';
 import type { AuthStackScreenProps } from '@/types/navigation';
 
 const BULLETS: { icon: keyof typeof Ionicons.glyphMap; label: string }[] = [
@@ -16,6 +16,8 @@ const BULLETS: { icon: keyof typeof Ionicons.glyphMap; label: string }[] = [
 ];
 
 export default function WelcomeScreen({ navigation }: AuthStackScreenProps<'Welcome'>) {
+  const { colors } = useTheme();
+
   return (
     <Screen>
       <View style={{ flex: 1, justifyContent: 'space-between', paddingVertical: spacing.lg }}>
@@ -23,7 +25,7 @@ export default function WelcomeScreen({ navigation }: AuthStackScreenProps<'Welc
         <View style={{ marginTop: spacing.xl }}>
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontWeight: '900',
               fontSize: 44,
               lineHeight: 46,
@@ -76,7 +78,7 @@ export default function WelcomeScreen({ navigation }: AuthStackScreenProps<'Welc
               >
                 <Ionicons name={bullet.icon} size={17} color={colors.lime} />
               </View>
-              <Text style={{ color: colors.white, fontWeight: '700', fontSize: 15 }}>
+              <Text style={{ color: colors.textPrimary, fontWeight: '700', fontSize: 15 }}>
                 {bullet.label}
               </Text>
             </View>

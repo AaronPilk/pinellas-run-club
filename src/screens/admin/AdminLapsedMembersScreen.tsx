@@ -5,7 +5,7 @@ import { Alert, FlatList, Linking, Pressable, Text, View } from 'react-native';
 import { Avatar, EmptyState, ErrorState, LoadingState, Screen } from '@/components/ui';
 import { useLapsedMembers } from '@/hooks/useAdmin';
 import { useAuth } from '@/hooks/useAuth';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme, type Palette } from '@/theme';
 import type { LapsedMember } from '@/types/models';
 import type { MoreStackScreenProps } from '@/types/navigation';
 
@@ -26,7 +26,7 @@ function lapsedLabel(days: number | null): string {
 }
 
 /** danger: never checked in or 21+ days lapsed; warning: 14+ days. */
-function severityColor(days: number | null): string {
+function severityColor(days: number | null, colors: Palette): string {
   if (days === null || days >= 21) return colors.danger;
   if (days >= 14) return colors.warning;
   return colors.gray500;
@@ -35,6 +35,8 @@ function severityColor(days: number | null): string {
 export default function AdminLapsedMembersScreen({
   navigation,
 }: MoreStackScreenProps<'AdminLapsedMembers'>) {
+  const { colors } = useTheme();
+
   const { isAdmin } = useAuth();
   const lapsedQuery = useLapsedMembers();
 
@@ -52,7 +54,7 @@ export default function AdminLapsedMembersScreen({
 
   const renderMember = ({ item }: { item: LapsedMember }) => {
     const days = daysSince(item.last_checkin_at);
-    const accent = severityColor(days);
+    const accent = severityColor(days, colors);
     const flagged = days === null || days >= 21;
 
     return (
@@ -72,7 +74,7 @@ export default function AdminLapsedMembersScreen({
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.xs }}>
               {flagged ? <Ionicons name="flag" size={14} color={accent} /> : null}
               <Text
-                style={{ color: colors.white, fontWeight: '800', fontSize: 15, flexShrink: 1 }}
+                style={{ color: colors.textPrimary, fontWeight: '800', fontSize: 15, flexShrink: 1 }}
                 numberOfLines={1}
               >
                 {item.full_name}
@@ -132,11 +134,11 @@ export default function AdminLapsedMembersScreen({
             accessibilityRole="button"
             accessibilityLabel="Go back"
           >
-            <Ionicons name="chevron-back" size={26} color={colors.white} />
+            <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
           </Pressable>
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontSize: 20,
               fontWeight: '900',
               textTransform: 'uppercase',

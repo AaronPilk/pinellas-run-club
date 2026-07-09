@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import { colors, spacing } from '@/theme';
+import { spacing, useTheme } from '@/theme';
 
 import { Button } from './Button';
 
@@ -15,12 +15,14 @@ type Props = {
 };
 
 export function EmptyState({ icon = 'trail-sign-outline', title, message, actionLabel, onAction }: Props) {
+  const { colors } = useTheme();
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: spacing.xl }}>
       <Ionicons name={icon} size={44} color={colors.gray500} style={{ marginBottom: spacing.md }} />
       <Text
         style={{
-          color: colors.white,
+          color: colors.textPrimary,
           fontWeight: '800',
           fontSize: 18,
           textAlign: 'center',

@@ -15,7 +15,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { copy } from '@/lib/copy';
 import { getErrorMessage } from '@/lib/errors';
 import { hapticLight, hapticSuccess } from '@/lib/haptics';
-import { colors, radius, spacing } from '@/theme';
+import { radius, spacing, useTheme } from '@/theme';
 import type { Profile, UserRole, UserStatus } from '@/types/models';
 import type { MoreStackScreenProps } from '@/types/navigation';
 
@@ -27,6 +27,8 @@ const STATUS_TONES: Record<UserStatus, 'lime' | 'neutral' | 'warning' | 'danger'
 };
 
 export default function AdminMembersScreen({ navigation }: MoreStackScreenProps<'AdminMembers'>) {
+  const { colors } = useTheme();
+
   const { isAdmin, isSuperAdmin } = useAuth();
   const [tab, setTab] = useState<'pending' | 'all'>('pending');
   const [search, setSearch] = useState('');
@@ -150,11 +152,11 @@ export default function AdminMembersScreen({ navigation }: MoreStackScreenProps<
             accessibilityRole="button"
             accessibilityLabel="Go back"
           >
-            <Ionicons name="chevron-back" size={26} color={colors.white} />
+            <Ionicons name="chevron-back" size={26} color={colors.textPrimary} />
           </Pressable>
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontSize: 20,
               fontWeight: '900',
               textTransform: 'uppercase',
@@ -242,7 +244,7 @@ export default function AdminMembersScreen({ navigation }: MoreStackScreenProps<
                 <Avatar uri={item.avatar_url} name={item.full_name} size={42} />
                 <View style={{ flex: 1, marginLeft: spacing.sm }}>
                   <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.xs }}>
-                    <Text style={{ color: colors.white, fontWeight: '800', fontSize: 15, flexShrink: 1 }} numberOfLines={1}>
+                    <Text style={{ color: colors.textPrimary, fontWeight: '800', fontSize: 15, flexShrink: 1 }} numberOfLines={1}>
                       {item.full_name}
                     </Text>
                     {item.role !== 'member' ? (

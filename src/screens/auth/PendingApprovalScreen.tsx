@@ -7,9 +7,11 @@ import { Button, Card, Screen } from '@/components/ui';
 import { copy } from '@/lib/copy';
 import { getErrorMessage } from '@/lib/errors';
 import { hapticLight } from '@/lib/haptics';
-import { colors, spacing } from '@/theme';
+import { spacing, useTheme } from '@/theme';
 
 export default function PendingApprovalScreen() {
+  const { colors } = useTheme();
+
   const { profile, refetchProfile, signOut } = useAuth();
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +50,7 @@ export default function PendingApprovalScreen() {
 
           <Text
             style={{
-              color: colors.white,
+              color: colors.textPrimary,
               fontWeight: '900',
               fontSize: 24,
               textTransform: 'uppercase',
