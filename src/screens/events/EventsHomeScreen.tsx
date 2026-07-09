@@ -50,17 +50,15 @@ function EventListItem({
             flexDirection: 'row',
             alignItems: 'center',
             gap: 6,
-            backgroundColor: colors.charcoal,
-            borderWidth: 1,
-            borderColor: colors.lime,
+            backgroundColor: colors.lime,
             borderRadius: radius.pill,
             paddingHorizontal: 16,
             paddingVertical: 8,
             opacity: rsvp.isPending ? 0.6 : 1,
           }}
         >
-          <Ionicons name="checkmark-circle-outline" size={16} color={colors.lime} />
-          <Text style={{ color: colors.lime, fontWeight: '800', fontSize: 13 }}>
+          <Ionicons name="checkmark-circle" size={16} color={colors.black} />
+          <Text style={{ color: colors.black, fontWeight: '800', fontSize: 13 }}>
             {copy.events.imIn}
           </Text>
         </Pressable>

@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { format, parseISO } from 'date-fns';
 import React from 'react';
-import { Alert, Linking, Pressable, Text, View } from 'react-native';
+import { Alert, Linking, Pressable, Text, useWindowDimensions, View } from 'react-native';
 
 import {
   Avatar,
@@ -11,30 +11,22 @@ import {
   ErrorState,
   LoadingState,
   Screen,
-  SectionHeader,
   StatCard,
 } from '@/components/ui';
 import { useAuth } from '@/hooks/useAuth';
 import { useCheckinStats } from '@/hooks/useCheckIn';
-import { useDmUnreadCount } from '@/hooks/useDms';
 import { useMyProfile } from '@/hooks/useMyProfile';
 import { useUnreadCount } from '@/hooks/useNotifications';
 import { copy } from '@/lib/copy';
 import { hapticLight } from '@/lib/haptics';
-import { radius, spacing, useTheme } from '@/theme';
+import { radius, shadows, spacing, useTheme } from '@/theme';
 import type { AppTabsParamList, ProfileStackScreenProps } from '@/types/navigation';
 
-type ActionRow = {
+type GridItem = {
   icon: keyof typeof Ionicons.glyphMap;
   label: string;
   onPress: () => void;
   badgeCount?: number;
-  danger?: boolean;
-};
-
-type ActionSection = {
-  title: string;
-  items: ActionRow[];
 };
 
 function ProfileFact({ icon, label, value }: { icon: keyof typeof Ionicons.glyphMap; label: string; value: string }) {
@@ -58,15 +50,18 @@ export default function MyProfileScreen({ navigation }: ProfileStackScreenProps<
   const profileQuery = useMyProfile();
   const statsQuery = useCheckinStats();
   const unreadQuery = useUnreadCount();
-  const dmUnreadQuery = useDmUnreadCount();
 
   const unread = unreadQuery.data ?? 0;
-  const dmUnread = dmUnreadQuery.data ?? 0;
 
   const profile = profileQuery.data;
   const stats = statsQuery.data;
 
   const tabNav = navigation.getParent<BottomTabNavigationProp<AppTabsParamList>>();
+
+  // 3-column grid: exact tile width edge-to-edge (screen padding = spacing.md each side).
+  const { width } = useWindowDimensions();
+  const gridGap = spacing.sm;
+  const tileWidth = (width - spacing.md * 2 - gridGap * 2) / 3;
 
   if (profileQuery.isLoading) {
     return (
@@ -91,50 +86,27 @@ export default function MyProfileScreen({ navigation }: ProfileStackScreenProps<
     ]);
   };
 
-  const sections: ActionSection[] = [
+  const gridItems: GridItem[] = [
+    { icon: 'create-outline', label: 'Edit Profile', onPress: () => navigation.navigate('EditProfile') },
+    { icon: 'card-outline', label: 'Member Pass', onPress: () => navigation.navigate('MemberPass') },
+    { icon: 'ribbon-outline', label: 'My Badges', onPress: () => navigation.navigate('MyBadges') },
     {
-      title: 'Profile',
-      items: [
-        { icon: 'create-outline', label: 'Edit Profile', onPress: () => navigation.navigate('EditProfile') },
-        { icon: 'card-outline', label: 'Member Pass', onPress: () => navigation.navigate('MemberPass') },
-        { icon: 'ribbon-outline', label: 'My Badges', onPress: () => navigation.navigate('MyBadges') },
-        {
-          icon: 'footsteps-outline',
-          label: 'Check-In History',
-          onPress: () => tabNav?.navigate('CheckInTab', { screen: 'CheckInHistory' }),
-        },
-      ],
+      icon: 'footsteps-outline',
+      label: 'Check-In History',
+      onPress: () => tabNav?.navigate('CheckInTab', { screen: 'CheckInHistory' }),
     },
     {
-      title: 'Club',
-      items: [
-        {
-          icon: 'chatbubbles-outline',
-          label: 'Messages',
-          onPress: () => navigation.navigate('Messages'),
-          badgeCount: dmUnread,
-        },
-        {
-          icon: 'notifications-outline',
-          label: 'Notifications',
-          onPress: () => navigation.navigate('Notifications'),
-          badgeCount: unread,
-        },
-        { icon: 'pricetags-outline', label: 'Partner Perks', onPress: () => navigation.navigate('PartnerPerks') },
-        { icon: 'stopwatch-outline', label: 'Courses', onPress: () => navigation.navigate('Courses') },
-        { icon: 'qr-code-outline', label: 'My QR Code', onPress: () => navigation.navigate('MyQRCode') },
-        { icon: 'person-add-outline', label: 'Invite a Friend', onPress: () => navigation.navigate('InviteFriend') },
-        { icon: 'megaphone-outline', label: 'Sponsorships', onPress: () => navigation.navigate('Sponsorship') },
-      ],
+      icon: 'notifications-outline',
+      label: 'Notifications',
+      onPress: () => navigation.navigate('Notifications'),
+      badgeCount: unread,
     },
-    {
-      title: 'Support',
-      items: [
-        { icon: 'help-circle-outline', label: 'Help & Support', onPress: () => navigation.navigate('HelpSupport') },
-        { icon: 'settings-outline', label: 'Settings', onPress: () => navigation.navigate('Settings') },
-        { icon: 'log-out-outline', label: copy.actions.signOut, onPress: handleSignOut, danger: true },
-      ],
-    },
+    { icon: 'pricetags-outline', label: 'Partner Perks', onPress: () => navigation.navigate('PartnerPerks') },
+    { icon: 'stopwatch-outline', label: 'Courses', onPress: () => navigation.navigate('Courses') },
+    { icon: 'person-add-outline', label: 'Invite a Friend', onPress: () => navigation.navigate('InviteFriend') },
+    { icon: 'megaphone-outline', label: 'Sponsorships', onPress: () => navigation.navigate('Sponsorship') },
+    { icon: 'help-circle-outline', label: 'Help & Support', onPress: () => navigation.navigate('HelpSupport') },
+    { icon: 'settings-outline', label: 'Settings', onPress: () => navigation.navigate('Settings') },
   ];
 
   return (
@@ -215,67 +187,98 @@ export default function MyProfileScreen({ navigation }: ProfileStackScreenProps<
         ) : null}
       </Card>
 
-      {sections.map((section) => (
-        <View key={section.title} style={{ marginTop: spacing.lg }}>
-          <SectionHeader title={section.title} />
-          {section.items.map((action) => (
-            <Pressable
-              key={action.label}
-              onPress={() => {
-                hapticLight();
-                action.onPress();
-              }}
-              accessibilityRole="button"
-              accessibilityLabel={action.label}
-              style={({ pressed }) => ({
-                flexDirection: 'row',
-                alignItems: 'center',
-                backgroundColor: colors.darkCard,
-                borderRadius: radius.md,
-                padding: spacing.md,
-                marginBottom: spacing.xs,
-                opacity: pressed ? 0.85 : 1,
-              })}
-            >
-              <Ionicons
-                name={action.icon}
-                size={20}
-                color={action.danger ? colors.danger : colors.lime}
-                style={{ marginRight: spacing.sm }}
-              />
-              <Text
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          gap: gridGap,
+          marginTop: spacing.lg,
+        }}
+      >
+        {gridItems.map((item) => (
+          <Pressable
+            key={item.label}
+            onPress={() => {
+              hapticLight();
+              item.onPress();
+            }}
+            accessibilityRole="button"
+            accessibilityLabel={
+              item.badgeCount ? `${item.label}, ${item.badgeCount} unread` : item.label
+            }
+            style={({ pressed }) => ({
+              width: tileWidth,
+              height: tileWidth,
+              backgroundColor: colors.darkCard,
+              borderRadius: radius.lg,
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingHorizontal: spacing.xs,
+              gap: spacing.xs,
+              opacity: pressed ? 0.85 : 1,
+              ...shadows.card,
+            })}
+          >
+            {item.badgeCount ? (
+              <View
                 style={{
-                  color: action.danger ? colors.danger : colors.textPrimary,
-                  fontSize: 15,
-                  fontWeight: '700',
-                  flex: 1,
+                  position: 'absolute',
+                  top: 10,
+                  right: 10,
+                  minWidth: 20,
+                  height: 20,
+                  borderRadius: 10,
+                  backgroundColor: colors.lime,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingHorizontal: 5,
                 }}
               >
-                {action.label}
-              </Text>
-              {action.badgeCount ? (
-                <View
-                  style={{
-                    minWidth: 22,
-                    height: 22,
-                    borderRadius: 11,
-                    backgroundColor: colors.lime,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    paddingHorizontal: 6,
-                    marginRight: spacing.xs,
-                  }}
-                >
-                  <Text style={{ color: colors.black, fontSize: 12, fontWeight: '900' }}>
-                    {action.badgeCount > 99 ? '99+' : action.badgeCount}
-                  </Text>
-                </View>
-              ) : null}
-              {!action.danger ? <Ionicons name="chevron-forward" size={18} color={colors.gray500} /> : null}
-            </Pressable>
-          ))}
-        </View>
-      ))}
+                <Text style={{ color: colors.black, fontSize: 11, fontWeight: '900' }}>
+                  {item.badgeCount > 99 ? '99+' : item.badgeCount}
+                </Text>
+              </View>
+            ) : null}
+            <Ionicons name={item.icon} size={28} color={colors.lime} />
+            <Text
+              numberOfLines={2}
+              style={{
+                color: colors.textPrimary,
+                fontSize: 12.5,
+                fontWeight: '700',
+                textAlign: 'center',
+              }}
+            >
+              {item.label}
+            </Text>
+          </Pressable>
+        ))}
+      </View>
+
+      <Pressable
+        onPress={() => {
+          hapticLight();
+          handleSignOut();
+        }}
+        accessibilityRole="button"
+        accessibilityLabel={copy.actions.signOut}
+        style={({ pressed }) => ({
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: spacing.xs,
+          backgroundColor: colors.darkCard,
+          borderRadius: radius.md,
+          padding: spacing.md,
+          marginTop: spacing.lg,
+          opacity: pressed ? 0.85 : 1,
+        })}
+      >
+        <Ionicons name="log-out-outline" size={20} color={colors.danger} />
+        <Text style={{ color: colors.danger, fontSize: 15, fontWeight: '700' }}>
+          {copy.actions.signOut}
+        </Text>
+      </Pressable>
     </Screen>
   );
 }

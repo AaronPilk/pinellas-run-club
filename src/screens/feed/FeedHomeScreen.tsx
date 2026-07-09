@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { FlatList, Pressable, RefreshControl, Text, View } from 'react-native';
 
 import { PostCard } from '@/components/PostCard';
@@ -10,15 +10,12 @@ import { useFeed, usePinnedPosts, useToggleLike } from '@/hooks/useFeed';
 import { useUnreadCount } from '@/hooks/useNotifications';
 import { copy } from '@/lib/copy';
 import { hapticLight } from '@/lib/haptics';
-import { radius, spacing, useTheme } from '@/theme';
+import { spacing, useTheme } from '@/theme';
 import type { FeedPostWithAuthor } from '@/types/models';
 import type { AppTabsParamList, FeedStackScreenProps } from '@/types/navigation';
 
-type FeedTab = 'all' | 'following';
-
 export default function FeedHomeScreen({ navigation }: FeedStackScreenProps<'FeedHome'>) {
   const { colors } = useTheme();
-  const [tab, setTab] = useState<FeedTab>('all');
   const feed = useFeed();
   const pinned = usePinnedPosts();
   const toggleLike = useToggleLike();
@@ -171,65 +168,12 @@ export default function FeedHomeScreen({ navigation }: FeedStackScreenProps<'Fee
           </Pressable>
         </View>
       </View>
-
-      {/* All / Following tabs */}
-      <View
-        style={{
-          flexDirection: 'row',
-          gap: spacing.xs,
-          paddingHorizontal: spacing.md,
-          paddingBottom: spacing.sm,
-        }}
-      >
-        {(
-          [
-            { key: 'all', label: 'All' },
-            { key: 'following', label: 'Following' },
-          ] as const
-        ).map((item) => {
-          const active = tab === item.key;
-          return (
-            <Pressable
-              key={item.key}
-              onPress={() => setTab(item.key)}
-              accessibilityRole="button"
-              accessibilityState={{ selected: active }}
-              style={{
-                paddingHorizontal: 18,
-                paddingVertical: 8,
-                borderRadius: radius.pill,
-                backgroundColor: active ? colors.lime : colors.charcoal,
-              }}
-            >
-              <Text
-                style={{
-                  color: active ? colors.black : colors.gray300,
-                  fontWeight: '800',
-                  fontSize: 13,
-                }}
-              >
-                {item.label}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </View>
     </View>
   );
 
   let body: React.ReactNode;
 
-  if (tab === 'following') {
-    body = (
-      <EmptyState
-        icon="people-outline"
-        title="Following is coming soon"
-        message="For now, the All tab has every post from the club."
-        actionLabel="See All Posts"
-        onAction={() => setTab('all')}
-      />
-    );
-  } else if (feed.isPending) {
+  if (feed.isPending) {
     body = <LoadingState />;
   } else if (feed.isError) {
     body = <ErrorState error={feed.error} onRetry={() => void feed.refetch()} />;
