@@ -14,7 +14,7 @@ export const FEED_PAGE_SIZE = 20;
 
 const POST_SELECT = `
   *,
-  author:profiles(id, full_name, username, avatar_url),
+  author:profiles!feed_posts_profile_id_fkey(id, full_name, username, avatar_url),
   media:feed_post_media(*),
   my_likes:feed_post_likes(profile_id)
 `;
@@ -172,7 +172,7 @@ export async function toggleLike(postId: string, currentlyLiked: boolean): Promi
 export async function listComments(postId: string): Promise<FeedCommentWithAuthor[]> {
   const { data, error } = await supabase
     .from('feed_comments')
-    .select('*, author:profiles(id, full_name, username, avatar_url)')
+    .select('*, author:profiles!feed_comments_profile_id_fkey(id, full_name, username, avatar_url)')
     .eq('post_id', postId)
     .is('deleted_at', null)
     .is('hidden_at', null)
