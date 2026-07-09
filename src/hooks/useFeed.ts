@@ -60,8 +60,10 @@ export function useCreatePost() {
 }
 
 /**
- * Optimistic like toggle: flips liked_by_me/like_count in the cache
- * immediately, rolls back on error, settles with the server count.
+ * Optimistic like toggle: flips liked_by_me/like_count in the feed list,
+ * pinned posts, and post detail caches immediately. Rolls back (and resyncs
+ * with the server) on error. No invalidation on success — the optimistic
+ * counts are kept so pinned posts don't trigger a jarring feed refetch.
  */
 export function useToggleLike() {
   const qc = useQueryClient();
@@ -70,8 +72,14 @@ export function useToggleLike() {
     mutationFn: ({ postId, liked }: { postId: string; liked: boolean }) =>
       toggleLike(postId, liked),
     onMutate: async ({ postId, liked }) => {
-      await qc.cancelQueries({ queryKey: queryKeys.feed.list() });
-      const previous = qc.getQueryData<InfiniteData<FeedPage>>(queryKeys.feed.list());
+      await Promise.all([
+        qc.cancelQueries({ queryKey: queryKeys.feed.list() }),
+        qc.cancelQueries({ queryKey: queryKeys.feed.pinned() }),
+        qc.cancelQueries({ queryKey: queryKeys.feed.post(postId) }),
+      ]);
+      const previousFeed = qc.getQueryData<InfiniteData<FeedPage>>(queryKeys.feed.list());
+      const previousPinned = qc.getQueryData<FeedPostWithAuthor[]>(queryKeys.feed.pinned());
+      const previousPost = qc.getQueryData<FeedPostWithAuthor>(queryKeys.feed.post(postId));
 
       const patch = (post: FeedPostWithAuthor): FeedPostWithAuthor =>
         post.id === postId
@@ -95,20 +103,30 @@ export function useToggleLike() {
               }
             : data
       );
+      qc.setQueryData<FeedPostWithAuthor[]>(
+        queryKeys.feed.pinned(),
+        (posts: FeedPostWithAuthor[] | undefined) => posts?.map(patch)
+      );
       qc.setQueryData<FeedPostWithAuthor>(
         queryKeys.feed.post(postId),
         (post: FeedPostWithAuthor | undefined) => (post ? patch(post) : post)
       );
 
-      return { previous };
+      return { previousFeed, previousPinned, previousPost };
     },
-    onError: (_err, _vars, context) => {
-      if (context?.previous) {
-        qc.setQueryData(queryKeys.feed.list(), context.previous);
+    onError: (_err, { postId }, context) => {
+      if (context?.previousFeed) {
+        qc.setQueryData(queryKeys.feed.list(), context.previousFeed);
       }
-    },
-    onSettled: (_data, _err, { postId }) => {
+      if (context?.previousPinned) {
+        qc.setQueryData(queryKeys.feed.pinned(), context.previousPinned);
+      }
+      if (context?.previousPost) {
+        qc.setQueryData(queryKeys.feed.post(postId), context.previousPost);
+      }
+      // Resync with the server since the optimistic state may be stale.
       qc.invalidateQueries({ queryKey: queryKeys.feed.list() });
+      qc.invalidateQueries({ queryKey: queryKeys.feed.pinned() });
       qc.invalidateQueries({ queryKey: queryKeys.feed.post(postId) });
     },
   });

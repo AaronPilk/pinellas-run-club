@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 
+import { useAuth } from '@/hooks/useAuth';
 import { useTheme } from '@/theme';
 import type { AppTabsParamList } from '@/types/navigation';
 
@@ -25,6 +26,7 @@ const TAB_ICONS: Record<keyof AppTabsParamList, { active: IoniconName; inactive:
 
 export function TabNavigator() {
   const { colors } = useTheme();
+  const { isAdmin } = useAuth();
 
   return (
     <Tab.Navigator
@@ -54,7 +56,9 @@ export function TabNavigator() {
       <Tab.Screen name="EventsTab" component={EventsStack} options={{ title: 'Events' }} />
       <Tab.Screen name="CheckInTab" component={CheckInStack} options={{ title: 'Check-In' }} />
       <Tab.Screen name="ProfileTab" component={ProfileStack} options={{ title: 'Profile' }} />
-      <Tab.Screen name="MoreTab" component={MoreStack} options={{ title: 'More' }} />
+      {isAdmin ? (
+        <Tab.Screen name="MoreTab" component={MoreStack} options={{ title: 'More' }} />
+      ) : null}
     </Tab.Navigator>
   );
 }

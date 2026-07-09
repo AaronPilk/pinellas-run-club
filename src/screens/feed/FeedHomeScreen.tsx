@@ -108,7 +108,7 @@ export default function FeedHomeScreen({ navigation }: FeedStackScreenProps<'Fee
         </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.md }}>
           <Pressable
-            onPress={() => tabNav?.navigate('MoreTab', { screen: 'Notifications' })}
+            onPress={() => tabNav?.navigate('ProfileTab', { screen: 'Notifications' })}
             hitSlop={8}
             accessibilityRole="button"
             accessibilityLabel={

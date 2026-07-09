@@ -163,7 +163,7 @@ export default function MemberPassScreen({ navigation }: ProfileStackScreenProps
 
           <Button
             title="View All Partners"
-            onPress={() => tabNav?.navigate('MoreTab', { screen: 'PartnerPerks' })}
+            onPress={() => tabNav?.navigate('ProfileTab', { screen: 'PartnerPerks' })}
             style={{ marginTop: spacing.lg }}
           />
         </>

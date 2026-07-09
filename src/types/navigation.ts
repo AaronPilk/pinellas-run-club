@@ -96,6 +96,17 @@ export type ProfileStackParamList = {
   MyBadges: undefined;
   MemberPass: undefined;
   Settings: undefined;
+  Notifications: undefined;
+  MyQRCode: undefined;
+  Sponsorship: undefined;
+  InviteFriend: undefined;
+  HelpSupport: undefined;
+  PartnerPerks: undefined;
+  PartnerDetail: { partnerId: string };
+  Courses: undefined;
+  CourseDetail: { courseId: string };
+  TimeEntry: { courseId: string; eventId?: string };
+  CourseHistory: { courseId?: string } | undefined;
 };
 
 export type ProfileStackScreenProps<T extends keyof ProfileStackParamList> =
