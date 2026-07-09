@@ -1,5 +1,4 @@
 import { Ionicons } from '@expo/vector-icons';
-import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import React, { useMemo } from 'react';
 import { FlatList, Pressable, RefreshControl, Text, View } from 'react-native';
 
@@ -12,7 +11,7 @@ import { copy } from '@/lib/copy';
 import { hapticLight } from '@/lib/haptics';
 import { spacing, useTheme } from '@/theme';
 import type { FeedPostWithAuthor } from '@/types/models';
-import type { AppTabsParamList, FeedStackScreenProps } from '@/types/navigation';
+import type { FeedStackScreenProps } from '@/types/navigation';
 
 export default function FeedHomeScreen({ navigation }: FeedStackScreenProps<'FeedHome'>) {
   const { colors } = useTheme();
@@ -24,7 +23,6 @@ export default function FeedHomeScreen({ navigation }: FeedStackScreenProps<'Fee
 
   const unread = unreadQuery.data ?? 0;
   const dmUnread = dmUnreadQuery.data ?? 0;
-  const tabNav = navigation.getParent<BottomTabNavigationProp<AppTabsParamList>>();
 
   const posts = useMemo(
     () => feed.data?.pages.flatMap((page) => page.posts) ?? [],
@@ -108,7 +106,7 @@ export default function FeedHomeScreen({ navigation }: FeedStackScreenProps<'Fee
         </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: spacing.md }}>
           <Pressable
-            onPress={() => tabNav?.navigate('ProfileTab', { screen: 'Notifications' })}
+            onPress={() => navigation.navigate('Notifications')}
             hitSlop={8}
             accessibilityRole="button"
             accessibilityLabel={
@@ -138,7 +136,7 @@ export default function FeedHomeScreen({ navigation }: FeedStackScreenProps<'Fee
             ) : null}
           </Pressable>
           <Pressable
-            onPress={() => tabNav?.navigate('ProfileTab', { screen: 'Messages' })}
+            onPress={() => navigation.navigate('Messages')}
             hitSlop={8}
             accessibilityRole="button"
             accessibilityLabel={dmUnread > 0 ? `Messages, ${dmUnread} unread` : 'Messages'}

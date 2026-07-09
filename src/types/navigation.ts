@@ -55,6 +55,9 @@ export type FeedStackParamList = {
   CreatePost: { eventId?: string } | undefined;
   PostDetail: { postId: string };
   MemberProfile: { profileId: string };
+  Notifications: undefined;
+  Messages: undefined;
+  ChatThread: { conversationId: string; otherName?: string; otherProfileId?: string };
 };
 
 export type FeedStackScreenProps<T extends keyof FeedStackParamList> =
