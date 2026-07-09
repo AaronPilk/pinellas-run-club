@@ -75,6 +75,7 @@ export interface Profile {
   last_active_at: string | null;
   approved_at: string | null;
   approved_by_profile_id: string | null;
+  profile_completed_at: string | null;
   stripe_customer_id: string | null;
   stripe_subscription_id: string | null;
   subscription_status: string | null;

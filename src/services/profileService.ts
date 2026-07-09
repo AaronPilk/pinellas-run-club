@@ -68,6 +68,7 @@ export type ProfileUpdate = Partial<
     | 'notification_perks'
     | 'notification_social'
     | 'notification_badges'
+    | 'profile_completed_at'
   >
 >;
 

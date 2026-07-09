@@ -94,6 +94,7 @@ export default function CompleteProfileScreen() {
         notification_perks: notifyPerks,
         notification_social: notifySocial,
         notification_badges: notifyBadges,
+        profile_completed_at: new Date().toISOString(),
       });
       hapticSuccess();
       await refetchProfile(); // RootNavigator routes onward based on status.
@@ -108,6 +109,8 @@ export default function CompleteProfileScreen() {
   const handleSkip = async () => {
     setError(null);
     try {
+      // Mark onboarding done so we don't loop back here on next launch.
+      await updateProfile.mutateAsync({ profile_completed_at: new Date().toISOString() });
       await refetchProfile();
     } catch (err) {
       setError(getErrorMessage(err));

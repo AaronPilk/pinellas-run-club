@@ -85,11 +85,15 @@ export function RootNavigator() {
           <Stack.Screen name="Suspended" component={SuspendedScreen} />
         ) : isPending ? (
           <Stack.Screen name="PendingApproval" component={PendingApprovalScreen} />
-        ) : isApproved ? (
-          <Stack.Screen name="App" component={TabNavigator} />
         ) : profile === null ? (
           // Session exists but no profile row yet (e.g. just signed up).
           <Stack.Screen name="CompleteProfile" component={CompleteProfileScreen} />
+        ) : isApproved && !profile.profile_completed_at ? (
+          // Approved but hasn't finished onboarding — let them build their
+          // profile (photo, bio, interests) before landing in the app.
+          <Stack.Screen name="CompleteProfile" component={CompleteProfileScreen} />
+        ) : isApproved ? (
+          <Stack.Screen name="App" component={TabNavigator} />
         ) : (
           <Stack.Screen name="PendingApproval" component={PendingApprovalScreen} />
         )}
