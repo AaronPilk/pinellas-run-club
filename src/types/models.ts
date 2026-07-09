@@ -434,6 +434,42 @@ export interface LapsedMember {
   member_since: string;
 }
 
+// ---------------------------------------------------------------------------
+// Direct messages
+// ---------------------------------------------------------------------------
+
+export interface DmConversation {
+  id: string;
+  created_at: string;
+  last_message_at: string | null;
+  last_message_preview: string | null;
+  last_message_sender_profile_id: string | null;
+}
+
+export interface DmParticipant {
+  id: string;
+  conversation_id: string;
+  profile_id: string;
+  last_read_at: string | null;
+  created_at: string;
+}
+
+export interface DmMessage {
+  id: string;
+  conversation_id: string;
+  sender_profile_id: string;
+  content: string;
+  created_at: string;
+  deleted_at: string | null;
+}
+
+/** Inbox row: a conversation + the other member + whether it has unread. */
+export interface DmConversationListItem {
+  conversation: DmConversation;
+  other: ProfileSummary;
+  unread: boolean;
+}
+
 export interface AdminDashboardCounts {
   pending_members: number;
   total_members: number;

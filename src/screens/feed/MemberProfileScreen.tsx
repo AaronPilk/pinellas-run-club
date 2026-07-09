@@ -1,14 +1,17 @@
 import { Ionicons } from '@expo/vector-icons';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import * as Linking from 'expo-linking';
 import React from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Avatar, Badge, Card, ErrorState, LoadingState, StatCard } from '@/components/ui';
-import { useMemberProfile } from '@/hooks/useMyProfile';
+import { Avatar, Badge, Button, Card, ErrorState, LoadingState, StatCard } from '@/components/ui';
+import { useStartDm } from '@/hooks/useDms';
+import { useMemberProfile, useMyProfile } from '@/hooks/useMyProfile';
+import { copy } from '@/lib/copy';
 import { formatFullDate } from '@/lib/timeUtils';
 import { spacing, useTheme } from '@/theme';
-import type { FeedStackScreenProps } from '@/types/navigation';
+import type { AppTabsParamList, FeedStackScreenProps } from '@/types/navigation';
 
 export default function MemberProfileScreen({
   navigation,
@@ -18,6 +21,11 @@ export default function MemberProfileScreen({
 
   const { profileId } = route.params;
   const member = useMemberProfile(profileId);
+  const myProfile = useMyProfile();
+  const startDm = useStartDm();
+
+  const tabNav = navigation.getParent<BottomTabNavigationProp<AppTabsParamList>>();
+  const isMe = myProfile.data?.id === profileId;
 
   let body: React.ReactNode;
 
@@ -65,6 +73,27 @@ export default function MemberProfileScreen({
           <Text style={{ color: colors.gray500, fontSize: 13, marginTop: spacing.xs }}>
             Member since {formatFullDate(profile.created_at)}
           </Text>
+          {!isMe ? (
+            <Button
+              title={copy.dms.messageButton}
+              loading={startDm.isPending}
+              onPress={() => {
+                startDm.mutate(profile.id, {
+                  onSuccess: (conversationId) => {
+                    tabNav?.navigate('ProfileTab', {
+                      screen: 'ChatThread',
+                      params: {
+                        conversationId,
+                        otherName: profile.full_name,
+                        otherProfileId: profile.id,
+                      },
+                    });
+                  },
+                });
+              }}
+              style={{ marginTop: spacing.md, alignSelf: 'stretch' }}
+            />
+          ) : null}
         </View>
 
         {/* Bio + details (public fields only — phone/email stay hidden) */}

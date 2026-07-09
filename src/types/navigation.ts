@@ -97,6 +97,8 @@ export type ProfileStackParamList = {
   MemberPass: undefined;
   Settings: undefined;
   Notifications: undefined;
+  Messages: undefined;
+  ChatThread: { conversationId: string; otherName?: string; otherProfileId?: string };
   MyQRCode: undefined;
   Sponsorship: undefined;
   InviteFriend: undefined;
@@ -119,6 +121,8 @@ export type ProfileStackScreenProps<T extends keyof ProfileStackParamList> =
 export type MoreStackParamList = {
   MoreHome: undefined;
   Notifications: undefined;
+  Messages: undefined;
+  ChatThread: { conversationId: string; otherName?: string; otherProfileId?: string };
   MyQRCode: undefined;
   Sponsorship: undefined;
   InviteFriend: undefined;

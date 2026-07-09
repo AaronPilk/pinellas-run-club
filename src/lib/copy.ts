@@ -51,6 +51,16 @@ export const copy = {
     newPost: 'New Post',
     share: 'Share',
   },
+  dms: {
+    title: 'Messages',
+    searchPlaceholder: 'Search members…',
+    emptyTitle: 'No messages yet.',
+    emptyBody: 'Find a member above and say hi.',
+    threadEmpty: 'No messages yet. Break the ice.',
+    inputPlaceholder: 'Message…',
+    youPrefix: 'You: ',
+    messageButton: 'Message',
+  },
   courses: {
     newPr: 'New PR',
     viewHistory: 'View Course History',

@@ -16,6 +16,7 @@ import {
 } from '@/components/ui';
 import { useAuth } from '@/hooks/useAuth';
 import { useCheckinStats } from '@/hooks/useCheckIn';
+import { useDmUnreadCount } from '@/hooks/useDms';
 import { useMyProfile } from '@/hooks/useMyProfile';
 import { useUnreadCount } from '@/hooks/useNotifications';
 import { copy } from '@/lib/copy';
@@ -57,8 +58,10 @@ export default function MyProfileScreen({ navigation }: ProfileStackScreenProps<
   const profileQuery = useMyProfile();
   const statsQuery = useCheckinStats();
   const unreadQuery = useUnreadCount();
+  const dmUnreadQuery = useDmUnreadCount();
 
   const unread = unreadQuery.data ?? 0;
+  const dmUnread = dmUnreadQuery.data ?? 0;
 
   const profile = profileQuery.data;
   const stats = statsQuery.data;
@@ -105,6 +108,12 @@ export default function MyProfileScreen({ navigation }: ProfileStackScreenProps<
     {
       title: 'Club',
       items: [
+        {
+          icon: 'chatbubbles-outline',
+          label: 'Messages',
+          onPress: () => navigation.navigate('Messages'),
+          badgeCount: dmUnread,
+        },
         {
           icon: 'notifications-outline',
           label: 'Notifications',

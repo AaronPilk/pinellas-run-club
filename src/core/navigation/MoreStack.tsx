@@ -5,6 +5,8 @@ import type { MoreStackParamList } from '@/types/navigation';
 
 import MoreHomeScreen from '@/screens/more/MoreHomeScreen';
 import NotificationsScreen from '@/screens/more/NotificationsScreen';
+import MessagesScreen from '@/screens/messages/MessagesScreen';
+import ChatScreen from '@/screens/messages/ChatScreen';
 import MyQRCodeScreen from '@/screens/more/MyQRCodeScreen';
 import SponsorshipScreen from '@/screens/more/SponsorshipScreen';
 import InviteFriendScreen from '@/screens/more/InviteFriendScreen';
@@ -31,6 +33,8 @@ export function MoreStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="MoreHome" component={MoreHomeScreen} />
       <Stack.Screen name="Notifications" component={NotificationsScreen} />
+      <Stack.Screen name="Messages" component={MessagesScreen} />
+      <Stack.Screen name="ChatThread" component={ChatScreen} />
       <Stack.Screen name="MyQRCode" component={MyQRCodeScreen} />
       <Stack.Screen name="Sponsorship" component={SponsorshipScreen} />
       <Stack.Screen name="InviteFriend" component={InviteFriendScreen} />

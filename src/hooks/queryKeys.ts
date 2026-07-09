@@ -45,6 +45,14 @@ export const queryKeys = {
     mine: () => [...queryKeys.badges.all, 'mine'] as const,
     catalog: () => [...queryKeys.badges.all, 'catalog'] as const,
   },
+  dms: {
+    all: ['dms'] as const,
+    conversations: () => [...queryKeys.dms.all, 'conversations'] as const,
+    messages: (conversationId: string) =>
+      [...queryKeys.dms.all, 'messages', conversationId] as const,
+    memberSearch: (term: string) => [...queryKeys.dms.all, 'memberSearch', term] as const,
+    unreadCount: () => [...queryKeys.dms.all, 'unreadCount'] as const,
+  },
   notifications: {
     all: ['notifications'] as const,
     list: () => [...queryKeys.notifications.all, 'list'] as const,

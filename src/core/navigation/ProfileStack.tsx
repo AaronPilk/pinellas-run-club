@@ -9,6 +9,8 @@ import MyBadgesScreen from '@/screens/profile/MyBadgesScreen';
 import MemberPassScreen from '@/screens/profile/MemberPassScreen';
 import SettingsScreen from '@/screens/profile/SettingsScreen';
 import NotificationsScreen from '@/screens/more/NotificationsScreen';
+import MessagesScreen from '@/screens/messages/MessagesScreen';
+import ChatScreen from '@/screens/messages/ChatScreen';
 import MyQRCodeScreen from '@/screens/more/MyQRCodeScreen';
 import SponsorshipScreen from '@/screens/more/SponsorshipScreen';
 import InviteFriendScreen from '@/screens/more/InviteFriendScreen';
@@ -31,6 +33,8 @@ export function ProfileStack() {
       <Stack.Screen name="MemberPass" component={MemberPassScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen name="Notifications" component={NotificationsScreen} />
+      <Stack.Screen name="Messages" component={MessagesScreen} />
+      <Stack.Screen name="ChatThread" component={ChatScreen} />
       <Stack.Screen name="MyQRCode" component={MyQRCodeScreen} />
       <Stack.Screen name="Sponsorship" component={SponsorshipScreen} />
       <Stack.Screen name="InviteFriend" component={InviteFriendScreen} />

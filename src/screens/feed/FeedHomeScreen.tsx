@@ -5,6 +5,7 @@ import { FlatList, Pressable, RefreshControl, Text, View } from 'react-native';
 
 import { PostCard } from '@/components/PostCard';
 import { EmptyState, ErrorState, LoadingState, Screen, SectionHeader } from '@/components/ui';
+import { useDmUnreadCount } from '@/hooks/useDms';
 import { useFeed, usePinnedPosts, useToggleLike } from '@/hooks/useFeed';
 import { useUnreadCount } from '@/hooks/useNotifications';
 import { copy } from '@/lib/copy';
@@ -22,8 +23,10 @@ export default function FeedHomeScreen({ navigation }: FeedStackScreenProps<'Fee
   const pinned = usePinnedPosts();
   const toggleLike = useToggleLike();
   const unreadQuery = useUnreadCount();
+  const dmUnreadQuery = useDmUnreadCount();
 
   const unread = unreadQuery.data ?? 0;
+  const dmUnread = dmUnreadQuery.data ?? 0;
   const tabNav = navigation.getParent<BottomTabNavigationProp<AppTabsParamList>>();
 
   const posts = useMemo(
@@ -135,6 +138,27 @@ export default function FeedHomeScreen({ navigation }: FeedStackScreenProps<'Fee
                   {unread > 99 ? '99+' : unread}
                 </Text>
               </View>
+            ) : null}
+          </Pressable>
+          <Pressable
+            onPress={() => tabNav?.navigate('ProfileTab', { screen: 'Messages' })}
+            hitSlop={8}
+            accessibilityRole="button"
+            accessibilityLabel={dmUnread > 0 ? `Messages, ${dmUnread} unread` : 'Messages'}
+          >
+            <Ionicons name="chatbubbles-outline" size={26} color={colors.textPrimary} />
+            {dmUnread > 0 ? (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: -2,
+                  right: -3,
+                  width: 10,
+                  height: 10,
+                  borderRadius: 5,
+                  backgroundColor: colors.lime,
+                }}
+              />
             ) : null}
           </Pressable>
           <Pressable
